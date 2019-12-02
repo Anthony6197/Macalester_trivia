@@ -15,4 +15,8 @@ public class GameBoard {
         this.numbercounter = new GraphicsText();
         numbercounter.setPosition(canvas.getWidth()*0.9,canvas.getHeight()*0.1);
     }
+
+    public static void main(String[] args){
+        new GameBoard();
+    }
 }
