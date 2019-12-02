@@ -14,6 +14,7 @@ public class GameBoard {
     private GraphicsText choiceBox2;
     private GraphicsText choiceBox3;
     private GraphicsText choiceBox4;
+    private QuestionBank allQuestions;
 
     public GameBoard(){
         this.canvas = new CanvasWindow("Graduation Game",1000,1000);
@@ -21,8 +22,8 @@ public class GameBoard {
         numbercounter.setPosition(canvas.getWidth()*0.9,canvas.getHeight()*0.1);
     }
 
-    public void questionModule(){
-
+    public void questionModule(String type){
+//        return allQuestions.stream()
     }
 
     public static void main(String[] args){
