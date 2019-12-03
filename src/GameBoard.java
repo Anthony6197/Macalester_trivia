@@ -34,7 +34,7 @@ public class GameBoard {
         run();
     }
 
-    public List<Question> createQuestionList(String type){
+    private List<Question> createQuestionList(String type){
         return allQuestions.findAllQuestionsOfType(type);
     }
 

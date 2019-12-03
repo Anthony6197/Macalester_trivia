@@ -5,7 +5,7 @@ import static java.util.stream.Collectors.toList;
 
 public class QuestionBank {
     private ArrayList<Question> copyOfBank = new ArrayList<>();
-    public static List<Question> questionList = List.of(
+    private static List<Question> questionList = List.of(
                 new Question("Math", "What is a commonly used p-value threshold?", List.of("A", "B", "C", "D")),
                 new Question("Math", "What is a commonly used p-value threshold?", List.of("A", "B", "C", "D")),
                 new Question("Math", "What is a commonly used p-value threshold?", List.of("A", "B", "C", "D")),
@@ -39,6 +39,7 @@ public class QuestionBank {
                 new Question("Chem", "What is a commonly used p-value threshold?", List.of("A", "B", "C", "D")),
                 new Question("Chem", "What is a commonly used p-value threshold?", List.of("A", "B", "C", "D"))
         );
+
     public QuestionBank(){
         addQuestion();
     }
