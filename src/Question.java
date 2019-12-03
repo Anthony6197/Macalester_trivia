@@ -1,14 +1,27 @@
 import java.util.List;
+import java.util.Objects;
 
 public class Question{
-    private String question;
+    private String prompt;
     private List<String> choices;
     private String type;
 
     public Question(String myType,String question, List<String> myChoices) {
-        this.type = myType;
-        this.question = question;
-        this.choices = myChoices;
+        this.type = Objects.requireNonNull(myType);
+        this.prompt = Objects.requireNonNull(question);
+        this.choices = Objects.requireNonNull(myChoices);
+    }
+
+    public String getType(){
+        return type;
+    }
+
+    public String getPrompt(){
+        return prompt;
+    }
+
+    public String getChoice(int choiceIndex){
+        return choices.get(choiceIndex);
     }
 }
 

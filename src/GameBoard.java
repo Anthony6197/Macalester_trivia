@@ -4,6 +4,8 @@ import comp127graphics.GraphicsText;
 import java.util.List;
 import java.util.Random;
 
+import static java.util.stream.Collectors.toList;
+
 public class GameBoard {
     private CanvasWindow canvas;
     private GraphicsText numbercounter;
@@ -20,10 +22,14 @@ public class GameBoard {
         this.canvas = new CanvasWindow("Graduation Game",1000,1000);
         this.numbercounter = new GraphicsText();
         numbercounter.setPosition(canvas.getWidth()*0.9,canvas.getHeight()*0.1);
+
+        allQuestions = new QuestionBank();
     }
 
-    public void questionModule(String type){
-//        return allQuestions.stream()
+    public List<Question> questionModule(String type){
+        return QuestionBank.questionList.stream()
+                .filter(question -> question.getType().equals(type))
+                .collect(toList());
     }
 
     public static void main(String[] args){
