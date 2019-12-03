@@ -35,15 +35,18 @@ public class GameBoard {
     }
 
     public List<Question> createQuestionList(String type){
-        return QuestionBank.questionList.stream()
-                .filter(question -> question.getType().equals(type))
-                .collect(toList());
+        return allQuestions.findAllQuestionsOfType(type);
+    }
+
+    public Question selectQuestion(String type){
+        List<Question> questionList = createQuestionList(type);
+        int randomNumber = rand.nextInt(questionList.size());
+        return allQuestions.deleteQuestion(randomNumber);
     }
 
     public void run(){
         mapManager.generateMapbox();
     }
-
 
     public static void main(String[] args){
         new GameBoard();
