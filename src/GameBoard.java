@@ -8,8 +8,9 @@ import static java.util.stream.Collectors.toList;
 
 public class GameBoard {
     private CanvasWindow canvas;
-    private GraphicsText numbercounter;
+    private GraphicsText numberCounter;
     private Random rand;
+    private MapManager mapManager;
     private List<Map> passbyBoxes;
     private GraphicsText questionBox;
     private GraphicsText choiceBox1;
@@ -20,17 +21,29 @@ public class GameBoard {
 
     public GameBoard(){
         this.canvas = new CanvasWindow("Graduation Game",1000,1000);
-        this.numbercounter = new GraphicsText();
-        numbercounter.setPosition(canvas.getWidth()*0.9,canvas.getHeight()*0.1);
+        this.numberCounter = new GraphicsText();
+        numberCounter.setPosition(canvas.getWidth()*0.9,canvas.getHeight()*0.1);
+
+        rand = new Random();
+        int steps = rand.nextInt(6);
+        numberCounter.setText(steps+"steps");
+        canvas.add(numberCounter);
 
         allQuestions = new QuestionBank();
+
+        run();
     }
 
-    public List<Question> questionModule(String type){
+    public List<Question> createQuestionList(String type){
         return QuestionBank.questionList.stream()
                 .filter(question -> question.getType().equals(type))
                 .collect(toList());
     }
+
+    public void run(){
+        mapManager.generateMapbox();
+    }
+
 
     public static void main(String[] args){
         new GameBoard();

@@ -1,12 +1,11 @@
 import comp127graphics.CanvasWindow;
 import comp127graphics.GraphicsGroup;
 
-public class MapManger {
+public class MapManager {
     private CanvasWindow canvas;
-    private GraphicsGroup group;
     private final double MAPBOX_QUANTITY = 32;
 
-    public MapManger(CanvasWindow canvas){
+    public MapManager(CanvasWindow canvas){
         this.canvas = canvas;
     }
 
@@ -17,7 +16,6 @@ public class MapManger {
         Map mapbox = new Map(x, y,canvas.getWidth()*0.118,canvas.getWidth()*0.118);
         if (mapbox.getX()+mapbox.getWidth() < canvas.getWidth()){
             x += mapbox.getWidth();
-            group.add(mapbox);
             canvas.add(mapbox);
             }
         else if(mapbox.getX()+mapbox.getWidth() == canvas.getWidth()){
@@ -27,3 +25,4 @@ public class MapManger {
         }
     }
 }
+
