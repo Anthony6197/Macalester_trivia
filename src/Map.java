@@ -3,10 +3,20 @@ import comp127graphics.Rectangle;
 import java.awt.*;
 
 public class Map extends Rectangle {
+    private int index;
+
     public Map(double x, double y, double width, double height) {
         super(x, y, width, height);
         setStrokeWidth(Math.rint((width + height) / 40 + 1) * 0.5);
         setActive(false);
+    }
+
+    public int getIndex(){
+        return this.index;
+    }
+
+    public void setIndex(int index){
+        this.index = index;
     }
     /**
      * Changes the color of the box to indicate whether it is active. The meaning of “active” is up
