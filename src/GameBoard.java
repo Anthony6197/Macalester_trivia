@@ -36,6 +36,18 @@ public class GameBoard {
 
         allQuestions = new QuestionBank();
 
+        questionBox = new GraphicsText();
+        choiceBox1 = new GraphicsText();
+        choiceBox2 = new GraphicsText();
+        choiceBox3 = new GraphicsText();
+        choiceBox4 = new GraphicsText();
+
+        questionBox.setCenter(canvas.getWidth()*0.5,canvas.getHeight()*0.7);
+        choiceBox1.setCenter(canvas.getWidth()*0.3,canvas.getHeight()*0.8);
+        choiceBox2.setCenter(canvas.getWidth()*0.7,canvas.getHeight()*0.8);
+        choiceBox3.setCenter(canvas.getWidth()*0.3,canvas.getHeight()*0.9);
+        choiceBox4.setCenter(canvas.getWidth()*0.7,canvas.getHeight()*0.9);
+
         run();
     }
 
