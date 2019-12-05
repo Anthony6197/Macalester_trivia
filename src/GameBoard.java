@@ -2,19 +2,15 @@ import comp127graphics.CanvasWindow;
 import comp127graphics.GraphicsText;
 import comp127graphics.ui.Button;
 
-import java.awt.*;
 import java.util.List;
 import java.util.Random;
-import java.util.Scanner;
-
-import static java.util.stream.Collectors.toList;
 
 public class GameBoard {
     private CanvasWindow canvas;
     private GraphicsText numberCounter;
     private Random rand;
-    private MapManager mapManager;
-    private Button shaffle;
+    private BlockManager blockManager;
+    private Button dice;
     private int steps;
     private GraphicsText questionBox;
     private GraphicsText choiceBox1;
@@ -29,29 +25,30 @@ public class GameBoard {
         numberCounter.setPosition(canvas.getWidth()*0.9,canvas.getHeight()*0.1);
         canvas.add(numberCounter);
 
-        mapManager = new MapManager(this.canvas);
+        blockManager = new BlockManager(this.canvas);
 
-        shaffle = new Button("Click");
         rand = new Random();
-        shaffle.onClick(this::getSteps);
-        shaffle.setPosition(canvas.getWidth()*0.9,canvas.getHeight()*0.11);
-        canvas.add(shaffle);
+
+        dice = new Button("Click");
+        dice.onClick(this::moveOnce);
+        dice.setPosition(canvas.getWidth()*0.9,canvas.getHeight()*0.11);
+        canvas.add(dice);
 
         allQuestions = new QuestionBank();
 
         run();
     }
 
-    public void getSteps(){
-        int steps = rand.nextInt(7);
-        numberCounter.setText(steps + "steps");
-        this.steps = steps;
-        setColor();
+    public void moveOnce(){
+        int diceRoll = rand.nextInt(6) + 1;
+        numberCounter.setText(diceRoll + " steps");
+        this.steps += diceRoll;
+        updateBlockColor();
     }
 
-    public void setColor(){
-        for(Map box:mapManager.getPassedBoxes(steps)){
-            box.setActive(true);
+    public void updateBlockColor(){
+        for(Block block: blockManager.getPassedBlocks(steps)){
+            block.setActive(true);
         }
     }
     private List<Question> createQuestionList(String type){
@@ -64,8 +61,22 @@ public class GameBoard {
         return allQuestions.deleteQuestion(randomNumber);
     }
 
+    public void showQuestion(String type){
+        removeCurrentContent();
+        Question thisQuestion = selectQuestion(type);
+        assert thisQuestion.getType().equals(type);
+    }
+
+    public void removeCurrentContent(){
+        canvas.remove(questionBox);
+        canvas.remove(choiceBox1);
+        canvas.remove(choiceBox2);
+        canvas.remove(choiceBox3);
+        canvas.remove(choiceBox4);
+    }
+
     public void run(){
-        mapManager.generateMapbox();
+        blockManager.generateBlock();
     }
 
     public static void main(String[] args){

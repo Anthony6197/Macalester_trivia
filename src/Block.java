@@ -2,11 +2,12 @@ import comp127graphics.Rectangle;
 
 import java.awt.*;
 
-public class Map extends Rectangle {
-    private int index;
+public class Block extends Rectangle {
+    private final int index;
 
-    public Map(double x, double y, double width, double height) {
+    public Block(double x, double y, double width, double height, int index) {
         super(x, y, width, height);
+        this.index = index;
         setStrokeWidth(Math.rint((width + height) / 40 + 1) * 0.5);
         setActive(false);
     }
@@ -15,9 +16,6 @@ public class Map extends Rectangle {
         return this.index;
     }
 
-    public void setIndex(int index){
-        this.index = index;
-    }
     /**
      * Changes the color of the box to indicate whether it is active. The meaning of “active” is up
      * to each widget that uses this class.
