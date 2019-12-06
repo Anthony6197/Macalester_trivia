@@ -2,7 +2,6 @@ import comp127graphics.CanvasWindow;
 import comp127graphics.GraphicsText;
 import comp127graphics.ui.Button;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -58,6 +57,7 @@ public class GameBoard {
         numberCounter.setText(diceRoll + " steps");
         this.steps += diceRoll;
         updateBlockColor();
+        showQuestion(blockManager.getBlock(steps).getType());
     }
 
     public void updateBlockColor(){
@@ -94,11 +94,16 @@ public class GameBoard {
     }
 
     public void removeCurrentContent(){
-        canvas.remove(questionBox);
-        canvas.remove(choiceBox1);
-        canvas.remove(choiceBox2);
-        canvas.remove(choiceBox3);
-        canvas.remove(choiceBox4);
+        questionBox.setText("");
+        choiceBox1.setText("");
+        choiceBox2.setText("");
+        choiceBox3.setText("");
+        choiceBox4.setText("");
+//        canvas.remove(questionBox);
+//        canvas.remove(choiceBox1);
+//        canvas.remove(choiceBox2);
+//        canvas.remove(choiceBox3);
+//        canvas.remove(choiceBox4);
     }
 
     public void run(){

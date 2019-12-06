@@ -4,8 +4,9 @@ import java.awt.*;
 
 public class Block extends Rectangle {
     private final int index;
+    private String type;
 
-    public Block(double x, double y, double width, double height, int index) {
+    public Block(double x, double y, double width, double height, int index, String type) {
         super(x, y, width, height);
         this.index = index;
         setStrokeWidth(Math.rint((width + height) / 40 + 1) * 0.5);
@@ -15,6 +16,10 @@ public class Block extends Rectangle {
     public int getIndex(){
         return this.index;
     }
+
+    public String getType() {return this.type;}
+
+    public void setType(String type) {this.type = type;}
 
     /**
      * Changes the color of the box to indicate whether it is active. The meaning of “active” is up

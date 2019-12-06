@@ -6,7 +6,8 @@ import java.util.ArrayList;
 public class BlockManager {
     private CanvasWindow canvas;
     private List<Block> blocks;
-    private final double BLOCK_QUANTITY = 32;
+    private final int BLOCK_QUANTITY = 36;
+    private final List<String> availableTypes = List.of("Math","Chem");
 
     public BlockManager(CanvasWindow canvas){
         this.canvas = canvas;
@@ -20,8 +21,18 @@ public class BlockManager {
         double y = canvas.getHeight() * 0.1;
         double blockSize = canvas.getWidth() * 0.058;
 
+        List<String> BlockbyType = new ArrayList<>();
+        int rounds = BLOCK_QUANTITY / availableTypes.size();
+        int remainder = BLOCK_QUANTITY % availableTypes.size();
+        for(int i = 0; i < rounds; i++){
+            BlockbyType.addAll(availableTypes);
+        }
+        if(remainder != 0){
+            BlockbyType.addAll(availableTypes.subList(0,remainder));
+        }
+
         for (int i = 0; i < BLOCK_QUANTITY; i++) {
-            Block block = new Block(x, y, blockSize, blockSize, i);
+            Block block = new Block(x, y, blockSize, blockSize,i,BlockbyType.get(i));
             blocks.add(block);
             canvas.add(block);
 
