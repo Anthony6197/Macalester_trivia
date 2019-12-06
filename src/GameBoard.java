@@ -2,6 +2,8 @@ import comp127graphics.CanvasWindow;
 import comp127graphics.GraphicsText;
 import comp127graphics.ui.Button;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -73,10 +75,22 @@ public class GameBoard {
         return allQuestions.deleteQuestion(randomNumber);
     }
 
-    public void showQuestion(String type){
+    public GraphicsText showQuestion(String type){
         removeCurrentContent();
         Question thisQuestion = selectQuestion(type);
         assert thisQuestion.getType().equals(type);
+        questionBox.setText(thisQuestion.getPrompt());
+
+        String rightAnswer = thisQuestion.getRightAnswer();
+        List<String> listOfChoices = thisQuestion.getAllChoices();
+        Collections.shuffle(listOfChoices);
+        choiceBox1.setText(listOfChoices.get(0));
+        choiceBox2.setText(listOfChoices.get(1));
+        choiceBox3.setText(listOfChoices.get(2));
+        choiceBox4.setText(listOfChoices.get(3));
+
+        int rightIndex = listOfChoices.indexOf(rightAnswer);
+        return List.of(choiceBox1,choiceBox2,choiceBox3,choiceBox4).get(rightIndex);
     }
 
     public void removeCurrentContent(){

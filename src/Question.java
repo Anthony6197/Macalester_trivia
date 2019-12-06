@@ -20,8 +20,12 @@ public class Question{
         return prompt;
     }
 
-    public String getChoice(int choiceIndex){
-        return choices.get(choiceIndex);
+    public String getRightAnswer(){
+        return choices.get(0);
+    }
+
+    public List<String> getAllChoices(){
+        return List.copyOf(choices);
     }
 }
 
