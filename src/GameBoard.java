@@ -49,15 +49,18 @@ public class GameBoard {
         choiceBox3.setCenter(canvas.getWidth()*0.3,canvas.getHeight()*0.9);
         choiceBox4.setCenter(canvas.getWidth()*0.7,canvas.getHeight()*0.9);
 
+        steps = 0;
+
         run();
     }
 
-    public void moveOnce(){
+    public String moveOnce(){
         int diceRoll = rand.nextInt(6) + 1;
         numberCounter.setText(diceRoll + " steps");
         this.steps += diceRoll;
         updateBlockColor();
-        showQuestion(blockManager.getBlock(steps).getType());
+        System.out.println(steps);
+        return blockManager.getBlock(steps).getType();
     }
 
     public void updateBlockColor(){
@@ -69,15 +72,18 @@ public class GameBoard {
         return allQuestions.findAllQuestionsOfType(type);
     }
 
-    public Question selectQuestion(String type){
+    public Question selectQuestion(){
+        String type = moveOnce();
         List<Question> questionList = createQuestionList(type);
         int randomNumber = rand.nextInt(questionList.size());
+        showQuestion();
         return allQuestions.deleteQuestion(randomNumber);
     }
 
-    public GraphicsText showQuestion(String type){
+    public GraphicsText showQuestion(){
+        String type = moveOnce();
         removeCurrentContent();
-        Question thisQuestion = selectQuestion(type);
+        Question thisQuestion = selectQuestion();
         assert thisQuestion.getType().equals(type);
         questionBox.setText(thisQuestion.getPrompt());
 
@@ -93,17 +99,17 @@ public class GameBoard {
         return List.of(choiceBox1,choiceBox2,choiceBox3,choiceBox4).get(rightIndex);
     }
 
+//    public boolean checkIfCorrect(){
+//        GraphicsText correctChoiceBox = showQuestion();
+//        return false;
+//    }
+
     public void removeCurrentContent(){
         questionBox.setText("");
         choiceBox1.setText("");
         choiceBox2.setText("");
         choiceBox3.setText("");
         choiceBox4.setText("");
-//        canvas.remove(questionBox);
-//        canvas.remove(choiceBox1);
-//        canvas.remove(choiceBox2);
-//        canvas.remove(choiceBox3);
-//        canvas.remove(choiceBox4);
     }
 
     public void run(){
