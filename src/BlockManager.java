@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class BlockManager {
     private CanvasWindow canvas;
     private List<Block> blocks;
-    private final int BLOCK_QUANTITY = 36;
+    private static final int BLOCK_QUANTITY = 36;
     private final List<String> availableTypes = List.of("Math","Chem");
 
     public BlockManager(CanvasWindow canvas){
@@ -34,7 +34,6 @@ public class BlockManager {
         for (int i = 0; i < BLOCK_QUANTITY; i++) {
             Block block = new Block(x, y, blockSize, blockSize,i);
             block.setType(BlockbyType.get(i));
-            System.out.println(block.getIndex());
             blocks.add(block);
             canvas.add(block);
 
@@ -57,6 +56,10 @@ public class BlockManager {
 
     public List<Block> getPassedBlocks(int index){
         return blocks.subList(0,index);
+    }
+
+    public int getBlockQuantity(){
+        return BLOCK_QUANTITY;
     }
 
 }

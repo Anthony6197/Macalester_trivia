@@ -3,6 +3,7 @@ import comp127graphics.FontStyle;
 import comp127graphics.GraphicsText;
 import comp127graphics.ui.Button;
 
+import java.awt.*;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -20,6 +21,8 @@ public class GameBoard {
     private GraphicsText choiceBox3;
     private GraphicsText choiceBox4;
     private QuestionBank allQuestions;
+    private int currentScore = 0;
+    private boolean exceed = false;
 
     public GameBoard(){
         this.canvas = new CanvasWindow("Graduation Game",1000,1000);
@@ -35,6 +38,14 @@ public class GameBoard {
         dice.onClick(this::moveOnce);
         dice.setPosition(canvas.getWidth()*0.9,canvas.getHeight()*0.15);
         canvas.add(dice);
+
+        canvas.animate(() ->{
+            if (currentScore < 60 && exceed){
+                showLose();
+            } else if (currentScore >= 60 && exceed){
+                showWin();
+            }
+        });
 
         allQuestions = new QuestionBank();
 
@@ -69,9 +80,14 @@ public class GameBoard {
     public void moveOnce(){
         int diceRoll = rand.nextInt(6) + 1;
         numberCounter.setText(diceRoll + " steps");
-        this.currentBlock += diceRoll;
+        if (this.currentBlock + diceRoll <= blockManager.getBlockQuantity()){
+            this.currentBlock += diceRoll;
+            showQuestion();
+        } else {
+            this.currentBlock = blockManager.getBlockQuantity();
+            this.exceed = true;
+        }
         updateBlockColor();
-        showQuestion();
     }
 
     public String getCurrentBlockType(){
@@ -100,7 +116,6 @@ public class GameBoard {
 
         String rightAnswer = thisQuestion.getRightAnswer();
         List<String> listOfChoices = thisQuestion.getAllChoices();
-        System.out.println(listOfChoices);
 
         Collections.shuffle(listOfChoices);
 
@@ -116,8 +131,24 @@ public class GameBoard {
 //    public boolean checkIfCorrect(){
 //        GraphicsText correctChoiceBox = showQuestion();
 //        return false;
+    // remember to update the score
 //    }
 
+    public void showLose(){
+        GraphicsText textBox = new GraphicsText("HA HA YOU LOST!", canvas.getWidth()*0.4, canvas.getHeight()*0.5);
+        textBox.setFont("Helvetica",FontStyle.BOLD_ITALIC,40);
+        textBox.setFillColor(Color.RED);
+        canvas.add(textBox);
+        canvas.draw();
+    }
+
+    public void showWin(){
+        GraphicsText textBox = new GraphicsText("Congratulations!", canvas.getWidth()*0.4, canvas.getHeight()*0.5);
+        textBox.setFont("Helvetica",FontStyle.BOLD_ITALIC,40);
+        textBox.setFillColor(Color.ORANGE);
+        canvas.add(textBox);
+        canvas.draw();
+    }
     public void run(){
         blockManager.generateBlock();
     }
