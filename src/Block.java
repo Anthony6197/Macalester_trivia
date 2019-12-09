@@ -1,8 +1,10 @@
+
 import comp127graphics.Rectangle;
 
 import java.awt.*;
 
 public class Block extends Rectangle {
+
     private final int index;
     private String type;
 
@@ -17,7 +19,9 @@ public class Block extends Rectangle {
         return this.index;
     }
 
-    public String getType() {return this.type;}
+    public String getType(){
+        return this.type;
+    }
 
     public void setType(String type) {this.type = type;}
 
@@ -27,8 +31,7 @@ public class Block extends Rectangle {
      */
     public void setActive(boolean active) {
         setFillColor(active
-                ? new Color(0x3ba634)
-                : new Color(0xD9D9D9));
+                ? new Color(0x9D2EA6)
+                : new Color(0x29D95B));
     }
-
 }

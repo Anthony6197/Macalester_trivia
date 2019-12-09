@@ -15,12 +15,6 @@ public class BlockManager {
 
     public void generateBlock() {
         this.blocks = new ArrayList<>();
-        double leftEdge = canvas.getWidth() * 0.1;
-        double rightEdge = canvas.getWidth() * 0.9;
-        double x = leftEdge;
-        double y = canvas.getHeight() * 0.1;
-        double blockSize = canvas.getWidth() * 0.058;
-
         List<String> BlockbyType = new ArrayList<>();
         int rounds = BLOCK_QUANTITY / availableTypes.size();
         int remainder = BLOCK_QUANTITY % availableTypes.size();
@@ -31,16 +25,28 @@ public class BlockManager {
             BlockbyType.addAll(availableTypes.subList(0,remainder));
         }
 
+        double leftEdge = canvas.getWidth() * 0.1;
+        double rightEdge = canvas.getWidth() * 0.9;
+        double x = leftEdge;
+        double y = canvas.getHeight() * 0.1;
+        boolean reverse = false;
+        double blockSize = canvas.getWidth() * 0.058;
+
         for (int i = 0; i < BLOCK_QUANTITY; i++) {
             Block block = new Block(x, y, blockSize, blockSize,i);
             block.setType(BlockbyType.get(i));
             blocks.add(block);
             canvas.add(block);
 
-            x += blockSize;
-            if (x + blockSize >= rightEdge) {
-                x = leftEdge;
+            if (x + 2 * blockSize >= rightEdge && !reverse || x - blockSize < leftEdge && reverse) {
+                reverse = !reverse;
                 y += blockSize;
+            } else {
+                if (reverse){
+                    x -= blockSize;
+                } else {
+                    x += blockSize;
+                }
             }
         }
     }
