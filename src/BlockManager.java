@@ -32,14 +32,16 @@ public class BlockManager {
         }
 
         for (int i = 0; i < BLOCK_QUANTITY; i++) {
-            Block block = new Block(x, y, blockSize, blockSize,i,BlockbyType.get(i));
+            Block block = new Block(x, y, blockSize, blockSize,i);
+            block.setType(BlockbyType.get(i));
+            System.out.println(block.getIndex());
             blocks.add(block);
             canvas.add(block);
 
             x += blockSize;
             if (x + blockSize >= rightEdge) {
                 x = leftEdge;
-                y += blockSize ;
+                y += blockSize;
             }
         }
     }

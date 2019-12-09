@@ -1,9 +1,10 @@
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class Question{
     private String prompt;
-    private List<String> choices;
+    private final List<String> choices;
     private String type;
 
     public Question(String myType,String question, List<String> myChoices) {
@@ -25,7 +26,7 @@ public class Question{
     }
 
     public List<String> getAllChoices(){
-        return List.copyOf(choices);
+        return new ArrayList<>(choices);
     }
 }
 

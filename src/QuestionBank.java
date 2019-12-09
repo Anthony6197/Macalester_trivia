@@ -4,8 +4,7 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 
 public class QuestionBank {
-    private ArrayList<Question> copyOfBank = new ArrayList<>();
-    private static List<Question> questionList = List.of(
+    private static final List<Question> masterQuestionList = List.of(
                 new Question("Math", "What is a commonly used p-value threshold?", List.of("A", "B", "C", "D")),
                 new Question("Math", "What is a commonly used p-value threshold?", List.of("A", "B", "C", "D")),
                 new Question("Math", "What is a commonly used p-value threshold?", List.of("A", "B", "C", "D")),
@@ -39,21 +38,14 @@ public class QuestionBank {
                 new Question("Chem", "What is a commonly used p-value threshold?", List.of("A", "B", "C", "D")),
                 new Question("Chem", "What is a commonly used p-value threshold?", List.of("A", "B", "C", "D"))
         );
-
-    public QuestionBank(){
-        addQuestion();
-    }
-
-    private void addQuestion(){
-        copyOfBank.addAll(questionList);
-    }
+    private List<Question> availableQuestions = new ArrayList<>(masterQuestionList);
 
     public Question deleteQuestion(int index){
-        return copyOfBank.remove(index);
+        return availableQuestions.remove(index);
     }
 
     public List<Question> findAllQuestionsOfType(String type){
-        return copyOfBank.stream()
+        return availableQuestions.stream()
                 .filter(question -> question.getType().equals(type))
                 .collect(toList());
     }

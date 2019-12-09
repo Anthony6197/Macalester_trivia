@@ -6,7 +6,7 @@ public class Block extends Rectangle {
     private final int index;
     private String type;
 
-    public Block(double x, double y, double width, double height, int index, String type) {
+    public Block(double x, double y, double width, double height, int index) {
         super(x, y, width, height);
         this.index = index;
         setStrokeWidth(Math.rint((width + height) / 40 + 1) * 0.5);

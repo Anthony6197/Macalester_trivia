@@ -1,4 +1,5 @@
 import comp127graphics.CanvasWindow;
+import comp127graphics.FontStyle;
 import comp127graphics.GraphicsText;
 import comp127graphics.ui.Button;
 
@@ -12,7 +13,7 @@ public class GameBoard {
     private Random rand;
     private BlockManager blockManager;
     private Button dice;
-    private int steps;
+    private int currentBlock;
     private GraphicsText questionBox;
     private GraphicsText choiceBox1;
     private GraphicsText choiceBox2;
@@ -32,7 +33,7 @@ public class GameBoard {
 
         dice = new Button("Click");
         dice.onClick(this::moveOnce);
-        dice.setPosition(canvas.getWidth()*0.9,canvas.getHeight()*0.11);
+        dice.setPosition(canvas.getWidth()*0.9,canvas.getHeight()*0.15);
         canvas.add(dice);
 
         allQuestions = new QuestionBank();
@@ -43,28 +44,42 @@ public class GameBoard {
         choiceBox3 = new GraphicsText();
         choiceBox4 = new GraphicsText();
 
-        questionBox.setCenter(canvas.getWidth()*0.5,canvas.getHeight()*0.7);
-        choiceBox1.setCenter(canvas.getWidth()*0.3,canvas.getHeight()*0.8);
-        choiceBox2.setCenter(canvas.getWidth()*0.7,canvas.getHeight()*0.8);
-        choiceBox3.setCenter(canvas.getWidth()*0.3,canvas.getHeight()*0.9);
-        choiceBox4.setCenter(canvas.getWidth()*0.7,canvas.getHeight()*0.9);
+        questionBox.setCenter(canvas.getWidth()*0.3,canvas.getHeight()*0.65);
+        questionBox.setFont("Helvetica", FontStyle.BOLD,20);
+        choiceBox1.setCenter(canvas.getWidth()*0.3,canvas.getHeight()*0.77);
+        choiceBox1.setFont("Helvetica", FontStyle.PLAIN,18);
+        choiceBox2.setCenter(canvas.getWidth()*0.7,canvas.getHeight()*0.77);
+        choiceBox2.setFont("Helvetica", FontStyle.PLAIN,18);
+        choiceBox3.setCenter(canvas.getWidth()*0.3,canvas.getHeight()*0.87);
+        choiceBox3.setFont("Helvetica", FontStyle.PLAIN,18);
+        choiceBox4.setCenter(canvas.getWidth()*0.7,canvas.getHeight()*0.87);
+        choiceBox4.setFont("Helvetica", FontStyle.PLAIN,18);
 
-        steps = 0;
+        canvas.add(questionBox);
+        canvas.add(choiceBox1);
+        canvas.add(choiceBox2);
+        canvas.add(choiceBox3);
+        canvas.add(choiceBox4);
+
+        currentBlock = 0;
 
         run();
     }
 
-    public String moveOnce(){
+    public void moveOnce(){
         int diceRoll = rand.nextInt(6) + 1;
         numberCounter.setText(diceRoll + " steps");
-        this.steps += diceRoll;
+        this.currentBlock += diceRoll;
         updateBlockColor();
-        System.out.println(steps);
-        return blockManager.getBlock(steps).getType();
+        showQuestion();
+    }
+
+    public String getCurrentBlockType(){
+        return blockManager.getBlock(currentBlock).getType();
     }
 
     public void updateBlockColor(){
-        for(Block block: blockManager.getPassedBlocks(steps)){
+        for(Block block: blockManager.getPassedBlocks(currentBlock)){
             block.setActive(true);
         }
     }
@@ -73,23 +88,22 @@ public class GameBoard {
     }
 
     public Question selectQuestion(){
-        String type = moveOnce();
+        String type = getCurrentBlockType();
         List<Question> questionList = createQuestionList(type);
         int randomNumber = rand.nextInt(questionList.size());
-        showQuestion();
         return allQuestions.deleteQuestion(randomNumber);
     }
 
     public GraphicsText showQuestion(){
-        String type = moveOnce();
-        removeCurrentContent();
         Question thisQuestion = selectQuestion();
-        assert thisQuestion.getType().equals(type);
         questionBox.setText(thisQuestion.getPrompt());
 
         String rightAnswer = thisQuestion.getRightAnswer();
         List<String> listOfChoices = thisQuestion.getAllChoices();
+        System.out.println(listOfChoices);
+
         Collections.shuffle(listOfChoices);
+
         choiceBox1.setText(listOfChoices.get(0));
         choiceBox2.setText(listOfChoices.get(1));
         choiceBox3.setText(listOfChoices.get(2));
@@ -103,14 +117,6 @@ public class GameBoard {
 //        GraphicsText correctChoiceBox = showQuestion();
 //        return false;
 //    }
-
-    public void removeCurrentContent(){
-        questionBox.setText("");
-        choiceBox1.setText("");
-        choiceBox2.setText("");
-        choiceBox3.setText("");
-        choiceBox4.setText("");
-    }
 
     public void run(){
         blockManager.generateBlock();
