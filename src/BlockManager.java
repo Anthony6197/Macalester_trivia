@@ -21,19 +21,19 @@ public class BlockManager {
         double y = canvas.getHeight() * 0.1;
         double blockSize = canvas.getWidth() * 0.058;
 
-        List<String> BlockbyType = new ArrayList<>();
+        List<String> BlockByType = new ArrayList<>();
         int rounds = BLOCK_QUANTITY / availableTypes.size();
         int remainder = BLOCK_QUANTITY % availableTypes.size();
         for(int i = 0; i < rounds; i++){
-            BlockbyType.addAll(availableTypes);
+            BlockByType.addAll(availableTypes);
         }
         if(remainder != 0){
-            BlockbyType.addAll(availableTypes.subList(0,remainder));
+            BlockByType.addAll(availableTypes.subList(0,remainder));
         }
 
         for (int i = 0; i < BLOCK_QUANTITY; i++) {
             Block block = new Block(x, y, blockSize, blockSize,i);
-            block.setType(BlockbyType.get(i));
+            block.setType(BlockByType.get(i));
             blocks.add(block);
             canvas.add(block);
 
@@ -55,7 +55,7 @@ public class BlockManager {
     }
 
     public List<Block> getPassedBlocks(int index){
-        return blocks.subList(0,index);
+        return blocks.subList(0,index+1);
     }
 
     public int getBlockQuantity(){
