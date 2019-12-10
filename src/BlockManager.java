@@ -61,6 +61,7 @@ public class BlockManager {
     public int getBlockQuantity(){
         return BLOCK_QUANTITY;
     }
+    // compensate for last time commit
 
 }
 
