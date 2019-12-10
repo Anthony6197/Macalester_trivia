@@ -24,6 +24,13 @@ public class GameBoard {
     private int currentScore = 0;
     private boolean exceed = false;
 
+    private Button chooseA;
+    private Button chooseB;
+    private Button chooseC;
+    private Button chooseD;
+    private int currentRightAnswer;
+    private GraphicsText userChoice;
+
     public GameBoard(){
         this.canvas = new CanvasWindow("Graduation Game",1000,1000);
         this.numberCounter = new GraphicsText();
@@ -38,6 +45,38 @@ public class GameBoard {
         dice.onClick(this::moveOnce);
         dice.setPosition(canvas.getWidth()*0.9,canvas.getHeight()*0.15);
         canvas.add(dice);
+
+        chooseA = new Button("Choose A");
+        chooseA.onClick(() -> {
+            userChoice.setText("0");
+            ifCorrect();
+        });
+        chooseA.setPosition(canvas.getWidth()*0.27,canvas.getHeight()*0.77);
+        canvas.add(chooseA);
+
+        chooseB = new Button("Choose B");
+        chooseB.onClick(() -> {
+            userChoice.setText("1");
+            ifCorrect();
+        });
+        chooseB.setPosition(canvas.getWidth()*0.67,canvas.getHeight()*0.77);
+        canvas.add(chooseB);
+
+        chooseC = new Button("Choose C");
+        chooseC.onClick(() -> {
+            userChoice.setText("2");
+            ifCorrect();
+        });
+        chooseC.setPosition(canvas.getWidth()*0.27,canvas.getHeight()*0.87);
+        canvas.add(chooseC);
+
+        chooseD = new Button("Choose D");
+        chooseD.onClick(() -> {
+            userChoice.setText("3");
+            ifCorrect();
+        });
+        chooseD.setPosition(canvas.getWidth()*0.67,canvas.getHeight()*0.87);
+        canvas.add(chooseD);
 
         canvas.animate(() ->{
             if (currentScore < 60 && exceed){
@@ -57,13 +96,13 @@ public class GameBoard {
 
         questionBox.setCenter(canvas.getWidth()*0.3,canvas.getHeight()*0.65);
         questionBox.setFont("Helvetica", FontStyle.BOLD,20);
-        choiceBox1.setCenter(canvas.getWidth()*0.3,canvas.getHeight()*0.77);
+        choiceBox1.setCenter(canvas.getWidth()*0.3,canvas.getHeight()*0.75);
         choiceBox1.setFont("Helvetica", FontStyle.PLAIN,18);
-        choiceBox2.setCenter(canvas.getWidth()*0.7,canvas.getHeight()*0.77);
+        choiceBox2.setCenter(canvas.getWidth()*0.7,canvas.getHeight()*0.75);
         choiceBox2.setFont("Helvetica", FontStyle.PLAIN,18);
-        choiceBox3.setCenter(canvas.getWidth()*0.3,canvas.getHeight()*0.87);
+        choiceBox3.setCenter(canvas.getWidth()*0.3,canvas.getHeight()*0.85);
         choiceBox3.setFont("Helvetica", FontStyle.PLAIN,18);
-        choiceBox4.setCenter(canvas.getWidth()*0.7,canvas.getHeight()*0.87);
+        choiceBox4.setCenter(canvas.getWidth()*0.7,canvas.getHeight()*0.85);
         choiceBox4.setFont("Helvetica", FontStyle.PLAIN,18);
 
         canvas.add(questionBox);
@@ -72,22 +111,24 @@ public class GameBoard {
         canvas.add(choiceBox3);
         canvas.add(choiceBox4);
 
-        currentBlock = 0;
+        currentBlock = -1;
 
+        showScore();
         run();
     }
 
     public void moveOnce(){
         int diceRoll = rand.nextInt(6) + 1;
         numberCounter.setText(diceRoll + " steps");
-        if (this.currentBlock + diceRoll <= blockManager.getBlockQuantity()){
+        if (this.currentBlock + diceRoll < blockManager.getBlockQuantity()){
             this.currentBlock += diceRoll;
             showQuestion();
         } else {
-            this.currentBlock = blockManager.getBlockQuantity();
+            this.currentBlock = blockManager.getBlockQuantity() - 1;
             this.exceed = true;
         }
         updateBlockColor();
+//        ifCorrect();
     }
 
     public String getCurrentBlockType(){
@@ -110,7 +151,7 @@ public class GameBoard {
         return allQuestions.deleteQuestion(randomNumber);
     }
 
-    public GraphicsText showQuestion(){
+    public void showQuestion(){
         Question thisQuestion = selectQuestion();
         questionBox.setText(thisQuestion.getPrompt());
 
@@ -124,15 +165,33 @@ public class GameBoard {
         choiceBox3.setText(listOfChoices.get(2));
         choiceBox4.setText(listOfChoices.get(3));
 
-        int rightIndex = listOfChoices.indexOf(rightAnswer);
-        return List.of(choiceBox1,choiceBox2,choiceBox3,choiceBox4).get(rightIndex);
+        currentRightAnswer = listOfChoices.indexOf(rightAnswer);
+//        this.currentAnswer = List.of(choiceBox1,choiceBox2,choiceBox3,choiceBox4).get(rightIndex);
     }
 
-//    public boolean checkIfCorrect(){
-//        GraphicsText correctChoiceBox = showQuestion();
-//        return false;
-    // remember to update the score
-//    }
+    public void ifCorrect(){
+        if (userChoice.getText().equals(Integer.toString(currentRightAnswer))){
+            int randomScore = rand.nextInt(4)+8;
+            currentScore += randomScore;
+
+            GraphicsText textBox2 = new GraphicsText("CORRECT!", canvas.getWidth()*0.5, canvas.getHeight()*0.5);
+            textBox2.setFont("Helvetica",FontStyle.BOLD,30);
+            textBox2.setFillColor(Color.PINK);
+            canvas.add(textBox2);
+            canvas.draw();
+            canvas.pause(200);
+            canvas.remove(textBox2);
+        } else {
+            GraphicsText textBox2 = new GraphicsText("WRONG!", canvas.getWidth()*0.5, canvas.getHeight()*0.5);
+            textBox2.setFont("Helvetica",FontStyle.BOLD,30);
+            textBox2.setFillColor(Color.BLUE);
+            canvas.add(textBox2);
+            canvas.draw();
+            canvas.pause(200);
+            canvas.remove(textBox2);
+        }
+        showScore();
+    }
 
     public void showLose(){
         GraphicsText textBox = new GraphicsText("HA HA YOU Failed!", canvas.getWidth()*0.4, canvas.getHeight()*0.5);
@@ -149,8 +208,17 @@ public class GameBoard {
         canvas.add(textBox);
         canvas.draw();
     }
+
     public void run(){
         blockManager.generateBlock();
+    }
+
+    public void showScore(){
+        GraphicsText textBox3 = new GraphicsText("You have " + currentScore + " points!", canvas.getWidth()*0.05, canvas.getHeight()*0.05);
+        textBox3.setFont("Helvetica",FontStyle.BOLD,25);
+        textBox3.setFillColor(Color.BLACK);
+        canvas.add(textBox3);
+        canvas.draw();
     }
 
     public static void main(String[] args){
