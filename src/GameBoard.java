@@ -1,6 +1,7 @@
 import comp127graphics.CanvasWindow;
 import comp127graphics.FontStyle;
 import comp127graphics.GraphicsText;
+import comp127graphics.Image;
 import comp127graphics.ui.Button;
 
 import java.awt.*;
@@ -115,6 +116,11 @@ public class GameBoard {
 
         showScore();
         run();
+
+//        Image background = new comp127graphics.Image(0,0);
+//        background.setImagePath("Mac.png");
+//        canvas.add(background);
+//
     }
 
     public void moveOnce(){
@@ -139,6 +145,7 @@ public class GameBoard {
         for(Block block: blockManager.getPassedBlocks(currentBlock)){
             block.setActive(true);
         }
+
     }
     private List<Question> createQuestionList(String type){
         return allQuestions.findAllQuestionsOfType(type);

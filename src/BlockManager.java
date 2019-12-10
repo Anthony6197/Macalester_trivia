@@ -1,4 +1,5 @@
 import comp127graphics.CanvasWindow;
+import comp127graphics.GraphicsText;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -32,8 +33,9 @@ public class BlockManager {
         double y = canvas.getHeight() * 0.1;
         boolean reverse = false;
         double blockSize = canvas.getWidth() * 0.058;
+        int i;
 
-        for (int i = 0; i < BLOCK_QUANTITY; i++) {
+        for (i = 0; i < BLOCK_QUANTITY; i++) {
             Block block = new Block(x, y, blockSize, blockSize,i);
             block.setType(BlockbyType.get(i));
             blocks.add(block);
@@ -42,9 +44,13 @@ public class BlockManager {
                 if (x + 2 * blockSize >= rightEdge && !reverse || x - blockSize < leftEdge && reverse) {
                     reverse = !reverse;
                     for (int j = 0; j < 2; j++){
+                        i++;
                         y += blockSize;
                         x = block.getX();
-                        Block cornerblock = new Block(x,y,blockSize, blockSize,j);
+                        GraphicsText vacation = new GraphicsText();
+                        vacation.setPosition(x+ 0.5*blockSize,y+0.5*blockSize);
+                        Block cornerblock = new Block(x,y,blockSize, blockSize,i);
+                        blocks.add(cornerblock);
                         canvas.add(cornerblock);
                     }
                 } else {
