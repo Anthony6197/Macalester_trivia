@@ -41,7 +41,12 @@ public class BlockManager {
 
                 if (x + 2 * blockSize >= rightEdge && !reverse || x - blockSize < leftEdge && reverse) {
                     reverse = !reverse;
-                    y += blockSize;
+                    for (int j = 0; j < 2; j++){
+                        y += blockSize;
+                        x = block.getX();
+                        Block cornerblock = new Block(x,y,blockSize, blockSize,j);
+                        canvas.add(cornerblock);
+                    }
                 } else {
                     if (reverse){
                         x -= blockSize;
@@ -52,7 +57,7 @@ public class BlockManager {
             }
         }
 
-        public Block getBlock ( int index){
+        public Block getBlock ( int index ){
             for (Block block : blocks) {
                 if (index == block.getIndex()) {
                     return block;

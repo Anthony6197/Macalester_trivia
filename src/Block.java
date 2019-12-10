@@ -23,7 +23,9 @@ public class Block extends Rectangle {
         return this.type;
     }
 
-    public void setType(String type) {this.type = type;}
+    public void setType(String type){
+        this.type = type;
+    }
 
     /**
      * Changes the color of the box to indicate whether it is active. The meaning of “active” is up
