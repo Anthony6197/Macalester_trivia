@@ -33,7 +33,7 @@ public class Block extends Rectangle {
      */
     public void setActive(boolean active) {
         setFillColor(active
-                ? new Color(0x9D2EA6)
-                : new Color(0x29D95B));
+                ? new Color(0x7546A6)
+                : new Color(0x39D9C8));
     }
 }

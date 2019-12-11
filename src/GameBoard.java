@@ -201,7 +201,7 @@ public class GameBoard {
     }
 
     public void showLose(){
-        GraphicsText textBox = new GraphicsText("HA HA YOU Failed!", canvas.getWidth()*0.4, canvas.getHeight()*0.5);
+        GraphicsText textBox = new GraphicsText("YOU ARE ALMOST THERE!", canvas.getWidth()*0.4, canvas.getHeight()*0.5);
         textBox.setFont("Helvetica",FontStyle.BOLD_ITALIC,40);
         textBox.setFillColor(Color.RED);
         canvas.add(textBox);
