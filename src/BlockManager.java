@@ -43,16 +43,15 @@ public class BlockManager {
 
                 if (x + 2 * blockSize >= rightEdge && !reverse || x - blockSize < leftEdge && reverse) {
                     reverse = !reverse;
-                    for (int j = 0; j < 2; j++){
-                        i++;
-                        y += blockSize;
-                        x = block.getX();
-                        GraphicsText vacation = new GraphicsText();
-                        vacation.setPosition(x+ 0.5*blockSize,y+0.5*blockSize);
-                        Block cornerblock = new Block(x,y,blockSize, blockSize,i);
-                        blocks.add(cornerblock);
-                        canvas.add(cornerblock);
-                    }
+                    i++;
+                    y += blockSize;
+                    GraphicsText vacation = new GraphicsText();
+                    vacation.setPosition(x + 0.5*blockSize,y + 0.5*blockSize);
+                    Block cornerblock = new Block(x, y, blockSize, blockSize, i);
+                    System.out.println(cornerblock.getIndex());
+                    blocks.add(cornerblock);
+                    canvas.add(cornerblock);
+                    y += blockSize;
                 } else {
                     if (reverse){
                         x -= blockSize;
