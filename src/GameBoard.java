@@ -30,7 +30,7 @@ public class GameBoard {
     private Button chooseC;
     private Button chooseD;
     private int currentRightAnswer;
-    private GraphicsText userChoice;
+    private int userChoice;
 
     public GameBoard(){
         this.canvas = new CanvasWindow("Graduation Game",1000,1000);
@@ -49,7 +49,7 @@ public class GameBoard {
 
         chooseA = new Button("Choose A");
         chooseA.onClick(() -> {
-            userChoice.setText("0");
+            userChoice = 0;
             ifCorrect();
         });
         chooseA.setPosition(canvas.getWidth()*0.27,canvas.getHeight()*0.77);
@@ -57,7 +57,7 @@ public class GameBoard {
 
         chooseB = new Button("Choose B");
         chooseB.onClick(() -> {
-            userChoice.setText("1");
+            userChoice = 1;
             ifCorrect();
         });
         chooseB.setPosition(canvas.getWidth()*0.67,canvas.getHeight()*0.77);
@@ -65,7 +65,7 @@ public class GameBoard {
 
         chooseC = new Button("Choose C");
         chooseC.onClick(() -> {
-            userChoice.setText("2");
+            userChoice = 2;
             ifCorrect();
         });
         chooseC.setPosition(canvas.getWidth()*0.27,canvas.getHeight()*0.87);
@@ -73,7 +73,7 @@ public class GameBoard {
 
         chooseD = new Button("Choose D");
         chooseD.onClick(() -> {
-            userChoice.setText("3");
+            userChoice = 3;
             ifCorrect();
         });
         chooseD.setPosition(canvas.getWidth()*0.67,canvas.getHeight()*0.87);
@@ -177,7 +177,7 @@ public class GameBoard {
     }
 
     public void ifCorrect(){
-        if (userChoice.getText().equals(Integer.toString(currentRightAnswer))){
+        if (userChoice == currentRightAnswer){
             int randomScore = rand.nextInt(4)+8;
             currentScore += randomScore;
 
