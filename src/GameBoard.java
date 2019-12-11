@@ -15,7 +15,7 @@ public class GameBoard {
     private Random rand;
     private BlockManager blockManager;
     private Button dice;
-    private int currentBlock;
+    private int currentBlock = 1;
     private GraphicsText questionBox;
     private GraphicsText choiceBox1;
     private GraphicsText choiceBox2;
@@ -31,6 +31,8 @@ public class GameBoard {
     private Button chooseD;
     private int currentRightAnswer;
     private int userChoice;
+
+    private GraphicsText textBox3;
 
     public GameBoard(){
         this.canvas = new CanvasWindow("Graduation Game",1000,1000);
@@ -112,7 +114,10 @@ public class GameBoard {
         canvas.add(choiceBox3);
         canvas.add(choiceBox4);
 
-        currentBlock = -1;
+        textBox3 = new GraphicsText("You have " + currentScore + " points!", canvas.getWidth()*0.05, canvas.getHeight()*0.05);
+        textBox3.setFont("Helvetica",FontStyle.BOLD,25);
+        textBox3.setFillColor(Color.BLACK);
+        canvas.add(textBox3);
 
         showScore();
         run();
@@ -186,7 +191,7 @@ public class GameBoard {
             textBox2.setFillColor(Color.PINK);
             canvas.add(textBox2);
             canvas.draw();
-            canvas.pause(200);
+            canvas.pause(1000);
             canvas.remove(textBox2);
         } else {
             GraphicsText textBox2 = new GraphicsText("WRONG!", canvas.getWidth()*0.5, canvas.getHeight()*0.5);
@@ -194,7 +199,7 @@ public class GameBoard {
             textBox2.setFillColor(Color.BLUE);
             canvas.add(textBox2);
             canvas.draw();
-            canvas.pause(200);
+            canvas.pause(1000);
             canvas.remove(textBox2);
         }
         showScore();
@@ -221,11 +226,7 @@ public class GameBoard {
     }
 
     public void showScore(){
-        GraphicsText textBox3 = new GraphicsText("You have " + currentScore + " points!", canvas.getWidth()*0.05, canvas.getHeight()*0.05);
-        textBox3.setFont("Helvetica",FontStyle.BOLD,25);
-        textBox3.setFillColor(Color.BLACK);
-        canvas.add(textBox3);
-        canvas.draw();
+        textBox3.setText("You have " + currentScore + " points!");
     }
 
     public static void main(String[] args){
