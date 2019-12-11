@@ -186,7 +186,7 @@ public class GameBoard {
             int randomScore = rand.nextInt(4)+8;
             currentScore += randomScore;
 
-            GraphicsText textBox2 = new GraphicsText("CORRECT!", canvas.getWidth()*0.5, canvas.getHeight()*0.5);
+            GraphicsText textBox2 = new GraphicsText("CORRECT!", canvas.getWidth()*0.5, canvas.getHeight()*0.52);
             textBox2.setFont("Helvetica",FontStyle.BOLD,30);
             textBox2.setFillColor(Color.PINK);
             canvas.add(textBox2);
@@ -194,7 +194,7 @@ public class GameBoard {
             canvas.pause(1000);
             canvas.remove(textBox2);
         } else {
-            GraphicsText textBox2 = new GraphicsText("WRONG!", canvas.getWidth()*0.5, canvas.getHeight()*0.5);
+            GraphicsText textBox2 = new GraphicsText("WRONG!", canvas.getWidth()*0.5, canvas.getHeight()*0.52);
             textBox2.setFont("Helvetica",FontStyle.BOLD,30);
             textBox2.setFillColor(Color.BLUE);
             canvas.add(textBox2);
@@ -206,7 +206,7 @@ public class GameBoard {
     }
 
     public void showLose(){
-        GraphicsText textBox = new GraphicsText("YOU ARE ALMOST THERE!", canvas.getWidth()*0.4, canvas.getHeight()*0.5);
+        GraphicsText textBox = new GraphicsText("YOU ARE ALMOST THERE!", canvas.getWidth()*0.4, canvas.getHeight()*0.52);
         textBox.setFont("Helvetica",FontStyle.BOLD_ITALIC,40);
         textBox.setFillColor(Color.RED);
         canvas.add(textBox);
@@ -214,7 +214,7 @@ public class GameBoard {
     }
 
     public void showWin(){
-        GraphicsText textBox = new GraphicsText("Congratulations!", canvas.getWidth()*0.4, canvas.getHeight()*0.5);
+        GraphicsText textBox = new GraphicsText("Congratulations!", canvas.getWidth()*0.4, canvas.getHeight()*0.52);
         textBox.setFont("Helvetica",FontStyle.BOLD_ITALIC,40);
         textBox.setFillColor(Color.ORANGE);
         canvas.add(textBox);
