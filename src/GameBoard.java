@@ -15,7 +15,7 @@ public class GameBoard {
     private Random rand;
     private BlockManager blockManager;
     private Button dice;
-    private int currentBlock = 1;
+    private int currentBlock = -1;
     private GraphicsText questionBox;
     private GraphicsText choiceBox1;
     private GraphicsText choiceBox2;
