@@ -1,7 +1,4 @@
-import comp127graphics.CanvasWindow;
-import comp127graphics.FontStyle;
-import comp127graphics.GraphicsText;
-import comp127graphics.Image;
+import comp127graphics.*;
 import comp127graphics.ui.Button;
 
 import java.awt.*;
@@ -22,6 +19,8 @@ public class GameBoard {
     private GraphicsText choiceBox3;
     private GraphicsText choiceBox4;
     private QuestionBank allQuestions;
+    private GraphicsGroup questionGroup;
+
     private int currentScore = 0;
     private boolean exceed = false;
 
@@ -41,21 +40,21 @@ public class GameBoard {
         canvas.add(numberCounter);
 
         blockManager = new BlockManager(this.canvas);
-
         rand = new Random();
 
-        dice = new Button("Click");
-        dice.onClick(this::moveOnce);
+        dice = new Button("Move forward");
+        dice.onClick(this::moveForward);
         dice.setPosition(canvas.getWidth()*0.9,canvas.getHeight()*0.15);
         canvas.add(dice);
 
+        this.questionGroup = new GraphicsGroup();
         chooseA = new Button("Choose A");
         chooseA.onClick(() -> {
             userChoice = 0;
             ifCorrect();
         });
         chooseA.setPosition(canvas.getWidth()*0.27,canvas.getHeight()*0.77);
-        canvas.add(chooseA);
+        questionGroup.add(chooseA);
 
         chooseB = new Button("Choose B");
         chooseB.onClick(() -> {
@@ -63,7 +62,7 @@ public class GameBoard {
             ifCorrect();
         });
         chooseB.setPosition(canvas.getWidth()*0.67,canvas.getHeight()*0.77);
-        canvas.add(chooseB);
+        questionGroup.add(chooseB);
 
         chooseC = new Button("Choose C");
         chooseC.onClick(() -> {
@@ -71,7 +70,7 @@ public class GameBoard {
             ifCorrect();
         });
         chooseC.setPosition(canvas.getWidth()*0.27,canvas.getHeight()*0.87);
-        canvas.add(chooseC);
+        questionGroup.add(chooseC);
 
         chooseD = new Button("Choose D");
         chooseD.onClick(() -> {
@@ -79,7 +78,7 @@ public class GameBoard {
             ifCorrect();
         });
         chooseD.setPosition(canvas.getWidth()*0.67,canvas.getHeight()*0.87);
-        canvas.add(chooseD);
+        questionGroup.add(chooseD);
 
         canvas.animate(() ->{
             if (currentScore < 60 && exceed){
@@ -108,11 +107,11 @@ public class GameBoard {
         choiceBox4.setCenter(canvas.getWidth()*0.7,canvas.getHeight()*0.85);
         choiceBox4.setFont("Helvetica", FontStyle.PLAIN,18);
 
-        canvas.add(questionBox);
-        canvas.add(choiceBox1);
-        canvas.add(choiceBox2);
-        canvas.add(choiceBox3);
-        canvas.add(choiceBox4);
+        questionGroup.add(questionBox);
+        questionGroup.add(choiceBox1);
+        questionGroup.add(choiceBox2);
+        questionGroup.add(choiceBox3);
+        questionGroup.add(choiceBox4);
 
         textBox3 = new GraphicsText("You have " + currentScore + " points!", canvas.getWidth()*0.05, canvas.getHeight()*0.05);
         textBox3.setFont("Helvetica",FontStyle.BOLD,25);
@@ -128,12 +127,15 @@ public class GameBoard {
 //
     }
 
-    public void moveOnce(){
+    public void moveForward(){
         int diceRoll = rand.nextInt(6) + 1;
         numberCounter.setText(diceRoll + " steps");
         if (this.currentBlock + diceRoll < blockManager.getBlockQuantity()){
             this.currentBlock += diceRoll;
             showQuestion();
+            if (questionGroup.getCanvas() == null){
+                canvas.add(questionGroup);
+            }
         } else {
             this.currentBlock = blockManager.getBlockQuantity() - 1;
             this.exceed = true;
@@ -193,6 +195,7 @@ public class GameBoard {
             canvas.draw();
             canvas.pause(1000);
             canvas.remove(textBox2);
+            canvas.remove(questionGroup);
         } else {
             GraphicsText textBox2 = new GraphicsText("WRONG!", canvas.getWidth()*0.5, canvas.getHeight()*0.52);
             textBox2.setFont("Helvetica",FontStyle.BOLD,30);
