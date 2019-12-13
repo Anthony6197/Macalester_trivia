@@ -11,7 +11,6 @@ public class GameBoard {
     private GraphicsText numberCounter;
     private Random rand;
     private BlockManager blockManager;
-    private Button dice;
     private int currentBlock = -1;
     private GraphicsText questionBox;
     private GraphicsText choiceBox1;
@@ -24,10 +23,6 @@ public class GameBoard {
     private int currentScore = 0;
     private boolean exceed = false;
 
-    private Button chooseA;
-    private Button chooseB;
-    private Button chooseC;
-    private Button chooseD;
     private int currentRightAnswer;
     private int userChoice;
 
@@ -42,43 +37,17 @@ public class GameBoard {
         blockManager = new BlockManager(this.canvas);
         rand = new Random();
 
-        dice = new Button("Move forward");
+        Button dice = new Button("Move forward");
         dice.onClick(this::moveForward);
-        dice.setPosition(canvas.getWidth()*0.9,canvas.getHeight()*0.15);
+        dice.setPosition(canvas.getWidth()*0.865,canvas.getHeight()*0.15);
         canvas.add(dice);
 
         this.questionGroup = new GraphicsGroup();
-        chooseA = new Button("Choose A");
-        chooseA.onClick(() -> {
-            userChoice = 0;
-            ifCorrect();
-        });
-        chooseA.setPosition(canvas.getWidth()*0.27,canvas.getHeight()*0.77);
-        questionGroup.add(chooseA);
 
-        chooseB = new Button("Choose B");
-        chooseB.onClick(() -> {
-            userChoice = 1;
-            ifCorrect();
-        });
-        chooseB.setPosition(canvas.getWidth()*0.67,canvas.getHeight()*0.77);
-        questionGroup.add(chooseB);
-
-        chooseC = new Button("Choose C");
-        chooseC.onClick(() -> {
-            userChoice = 2;
-            ifCorrect();
-        });
-        chooseC.setPosition(canvas.getWidth()*0.27,canvas.getHeight()*0.87);
-        questionGroup.add(chooseC);
-
-        chooseD = new Button("Choose D");
-        chooseD.onClick(() -> {
-            userChoice = 3;
-            ifCorrect();
-        });
-        chooseD.setPosition(canvas.getWidth()*0.67,canvas.getHeight()*0.87);
-        questionGroup.add(chooseD);
+        createChoiceButton(0,0.14, 0.725);
+        createChoiceButton(1,0.54, 0.725);
+        createChoiceButton(2,0.14, 0.825);
+        createChoiceButton(3,0.54, 0.825);
 
         canvas.animate(() ->{
             if (currentScore < 60 && exceed){
@@ -98,13 +67,13 @@ public class GameBoard {
 
         questionBox.setCenter(canvas.getWidth()*0.3,canvas.getHeight()*0.65);
         questionBox.setFont("Helvetica", FontStyle.BOLD,20);
-        choiceBox1.setCenter(canvas.getWidth()*0.3,canvas.getHeight()*0.75);
+        choiceBox1.setCenter(canvas.getWidth()*0.25,canvas.getHeight()*0.75);
         choiceBox1.setFont("Helvetica", FontStyle.PLAIN,18);
-        choiceBox2.setCenter(canvas.getWidth()*0.7,canvas.getHeight()*0.75);
+        choiceBox2.setCenter(canvas.getWidth()*0.65,canvas.getHeight()*0.75);
         choiceBox2.setFont("Helvetica", FontStyle.PLAIN,18);
-        choiceBox3.setCenter(canvas.getWidth()*0.3,canvas.getHeight()*0.85);
+        choiceBox3.setCenter(canvas.getWidth()*0.25,canvas.getHeight()*0.85);
         choiceBox3.setFont("Helvetica", FontStyle.PLAIN,18);
-        choiceBox4.setCenter(canvas.getWidth()*0.7,canvas.getHeight()*0.85);
+        choiceBox4.setCenter(canvas.getWidth()*0.65,canvas.getHeight()*0.85);
         choiceBox4.setFont("Helvetica", FontStyle.PLAIN,18);
 
         questionGroup.add(questionBox);
@@ -125,6 +94,16 @@ public class GameBoard {
 //        background.setImagePath("Mac.png");
 //        canvas.add(background);
 //
+    }
+
+    private void createChoiceButton(int choiceIndex, double x, double y) {
+        Button button = new Button("Choose " + (char) ('A' + choiceIndex));
+        button.onClick(() -> {
+            userChoice = choiceIndex;
+            ifCorrect();
+        });
+        button.setPosition(canvas.getWidth() * x,canvas.getHeight() * y);
+        questionGroup.add(button);
     }
 
     public void moveForward(){
