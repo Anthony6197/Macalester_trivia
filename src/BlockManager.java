@@ -48,7 +48,7 @@ public class BlockManager {
                     GraphicsText vacation = new GraphicsText();
                     vacation.setPosition(x + 0.5*blockSize,y + 0.5*blockSize);
                     Block cornerBlock = new Block(x, y, blockSize, blockSize, i);
-                    System.out.println(cornerBlock.getIndex());
+                    cornerBlock.setType(BlockByType.get(i));
                     blocks.add(cornerBlock);
                     canvas.add(cornerBlock);
                     y += blockSize;

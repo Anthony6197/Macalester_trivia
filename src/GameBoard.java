@@ -20,11 +20,11 @@ public class GameBoard {
 
     private GraphicsGroup questionGroup;
     private Line questionGroupBoundary;
-    private GraphicsText questionBox;
-    private GraphicsText choiceBox1;
-    private GraphicsText choiceBox2;
-    private GraphicsText choiceBox3;
-    private GraphicsText choiceBox4;
+    private GraphicsText questionBox = new GraphicsText();
+    private GraphicsText choiceBox1 = new GraphicsText();
+    private GraphicsText choiceBox2 = new GraphicsText();
+    private GraphicsText choiceBox3 = new GraphicsText();
+    private GraphicsText choiceBox4 = new GraphicsText();
 
     private int currentRightAnswer;
     private int userChoice;
@@ -34,6 +34,8 @@ public class GameBoard {
 
     public GameBoard(){
         this.canvas = new CanvasWindow("Graduation Game",1000,1000);
+        setBackgroundPicture();
+
         this.numberCounter = new GraphicsText();
         numberCounter.setPosition(canvas.getWidth()*0.9,canvas.getHeight()*0.11);
         numberCounter.setFont("Helvetica",FontStyle.BOLD,18);
@@ -63,16 +65,10 @@ public class GameBoard {
         });
 
         allQuestions = new QuestionBank();
-
-        choiceBox1 = new GraphicsText();
         styleQuestionGroupBox(choiceBox1,0.25,0.75,18);
-        choiceBox2 = new GraphicsText();
         styleQuestionGroupBox(choiceBox2,0.65,0.75,18);
-        choiceBox3 = new GraphicsText();
         styleQuestionGroupBox(choiceBox3,0.25,0.85,18);
-        choiceBox4 = new GraphicsText();
         styleQuestionGroupBox(choiceBox4,0.65,0.85,18);
-        questionBox = new GraphicsText();
         styleQuestionGroupBox(questionBox,0.25,0.65,20);
 
         currentScoreBox = new GraphicsText("You have " + currentTotalScore + " points!", canvas.getWidth()*0.05, canvas.getHeight()*0.05);
@@ -81,16 +77,18 @@ public class GameBoard {
         canvas.add(currentScoreBox);
 
         questionGroupBoundary = new Line(canvas.getWidth()*0.05,canvas.getHeight()*0.6,canvas.getWidth()*0.95,canvas.getHeight()*0.6);
-        questionGroupBoundary.setStrokeColor(Color.BLACK);
+        questionGroupBoundary.setStrokeColor(Color.GRAY);
         questionGroupBoundary.setStrokeWidth(5);
-
-        Image background = new comp127graphics.Image(0,0);
-        background.setImagePath("Mac.png");
-        canvas.add(background);
-        canvas.draw();
 
         showScore();
         run();
+    }
+
+    private void setBackgroundPicture() {
+        Image background = new Image(0,0);
+        background.setImagePath("MacShade.png");
+        canvas.add(background);
+        canvas.draw();
     }
 
     private void styleQuestionGroupBox(GraphicsText choiceBox, double x, double y, int fontSize) {
@@ -139,7 +137,6 @@ public class GameBoard {
     private Question selectQuestion(){
         String type = blockManager.getBlock(currentBlockNumber).getType();
         List<Question> questionList = createQuestionList(type);
-        System.out.println(questionList.size());
         int randomNumber = rand.nextInt(questionList.size());
         return allQuestions.deleteQuestion(randomNumber);
     }
@@ -147,17 +144,14 @@ public class GameBoard {
     private void showQuestion(){
         Question thisQuestion = selectQuestion();
         questionBox.setText(thisQuestion.getPrompt());
-
         String rightAnswer = thisQuestion.getRightAnswer();
         List<String> listOfChoices = thisQuestion.getAllChoices();
 
         Collections.shuffle(listOfChoices);
-
         choiceBox1.setText(listOfChoices.get(0));
         choiceBox2.setText(listOfChoices.get(1));
         choiceBox3.setText(listOfChoices.get(2));
         choiceBox4.setText(listOfChoices.get(3));
-
         currentRightAnswer = listOfChoices.indexOf(rightAnswer);
 
         canvas.add(questionGroupBoundary);
@@ -226,7 +220,8 @@ public class GameBoard {
     }
 
     private void showFinalResult(String s, Color color) {
-        GraphicsText textBox = new GraphicsText(s, canvas.getWidth() * 0.3, canvas.getHeight() * 0.55);
+        canvas.remove(questionGroup);
+        GraphicsText textBox = new GraphicsText(s, canvas.getWidth() * 0.3, canvas.getHeight() * 0.6);
         textBox.setFont("Helvetica", FontStyle.BOLD_ITALIC, 40);
         textBox.setFillColor(color);
         canvas.add(textBox);
