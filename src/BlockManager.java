@@ -62,7 +62,7 @@ public class BlockManager {
             }
         }
 
-        public Block getBlock ( int index ){
+        public Block getBlock(int index){
             for (Block block : blocks) {
                 if (index == block.getIndex()) {
                     return block;
@@ -71,7 +71,7 @@ public class BlockManager {
             return null;
         }
 
-        public List<Block> getPassedBlocks ( int index){
+        public List<Block> getPassedBlocks(int index){
             return blocks.subList(0, index + 1);
         }
 

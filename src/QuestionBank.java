@@ -17,7 +17,7 @@ public class QuestionBank {
                 new Question("Math", "How many iMacs does Room 256 have?", List.of("10", "12", "9", "8")),
                 new Question("Math", "How many session of Intro to Stats do MSCS offer in Spring 2020?", List.of("4", "2", "3", "6")),
                 new Question("Math", "What is equivalent to a set being compact?", List.of("Closed and bounded", "Open and closed", "open and bounded", "None of the others")),
-                new Question("Math", "What does MLE stand for?", List.of("Maximum Likelihood Estimation", "Marshmallow Like Estimation", "Mathematical Likelihood Estimation", "Moment-generating Likelihood Estimation")),
+                new Question("Math", "What does MLE stand for?", List.of("Maximum Likelihood Estimation", "Marshmallow Like Estimation", "Mathematical Likelihood Estimation", "Moment Likelihood Estimation")),
                 new Question("Math", "What is a prime number?", List.of("1001", "1003", "1005", "1008")),
                 new Question("Math", "How do we represent the square root of -1", List.of("i", "k", "j", "There's no such thing!")),
                 new Question("Math", "What is not a valid p-value?", List.of("1.5", "0.5", "0.00001", "0.05")),
