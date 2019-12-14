@@ -17,14 +17,14 @@ public class BlockManager {
     public void generateBlock() {
         this.blocks = new ArrayList<>();
 
-        List<String> BlockbyType = new ArrayList<>();
+        List<String> BlockByType = new ArrayList<>();
         int rounds = BLOCK_QUANTITY / availableTypes.size();
         int remainder = BLOCK_QUANTITY % availableTypes.size();
         for(int i = 0; i < rounds; i++){
-            BlockbyType.addAll(availableTypes);
+            BlockByType.addAll(availableTypes);
         }
         if(remainder != 0){
-            BlockbyType.addAll(availableTypes.subList(0,remainder));
+            BlockByType.addAll(availableTypes.subList(0,remainder));
         }
 
         double leftEdge = canvas.getWidth() * 0.1;
@@ -37,7 +37,7 @@ public class BlockManager {
 
         for (i = 0; i < BLOCK_QUANTITY; i++) {
             Block block = new Block(x, y, blockSize, blockSize,i);
-            block.setType(BlockbyType.get(i));
+            block.setType(BlockByType.get(i));
             blocks.add(block);
             canvas.add(block);
 
@@ -47,10 +47,10 @@ public class BlockManager {
                     y += blockSize;
                     GraphicsText vacation = new GraphicsText();
                     vacation.setPosition(x + 0.5*blockSize,y + 0.5*blockSize);
-                    Block cornerblock = new Block(x, y, blockSize, blockSize, i);
-                    System.out.println(cornerblock.getIndex());
-                    blocks.add(cornerblock);
-                    canvas.add(cornerblock);
+                    Block cornerBlock = new Block(x, y, blockSize, blockSize, i);
+                    System.out.println(cornerBlock.getIndex());
+                    blocks.add(cornerBlock);
+                    canvas.add(cornerBlock);
                     y += blockSize;
                 } else {
                     if (reverse){
@@ -78,7 +78,5 @@ public class BlockManager {
         public int getBlockQuantity () {
             return BLOCK_QUANTITY;
         }
-        // compensate for last time commit
-
 }
 
