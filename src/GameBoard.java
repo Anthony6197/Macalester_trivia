@@ -55,9 +55,9 @@ public class GameBoard {
 
         canvas.animate(() ->{
             if (currentTotalScore < 60 && exceed){
-                showLose();
+                showFinalResult("YOU ARE ALMOST THERE!", Color.RED);
             } else if (currentTotalScore >= 60 && exceed){
-                showWin();
+                showFinalResult("Congratulations!", Color.ORANGE);
             }
         });
 
@@ -162,9 +162,9 @@ public class GameBoard {
     }
 
     private void ifCorrect(){
-        int score = rand.nextInt(3)+7;
+        int score = rand.nextInt(4) + 8;
         if (userChoice == currentRightAnswer){
-            giveResultInText("Correct!",Color.red);
+            giveResultInText("Correct!",Color.green);
             if (secondChance){
                 currentTotalScore += score / 2;
                 giveScoreOnMap(score / 2);
@@ -177,7 +177,7 @@ public class GameBoard {
             secondChance = false;
             markResultOnMap(15, 30, 25, 40, Color.green, 27, 38, 47, 18);
         } else {
-            giveResultInText("Wrong!",Color.blue);
+            giveResultInText("Wrong!",Color.red);
             if(secondChance){
                 markResultOnMap(10, 10, 45, 45, Color.red, 45, 10, 10, 45);
                 canvas.remove(questionGroup);
@@ -203,7 +203,7 @@ public class GameBoard {
         Block currentBlock = blockManager.getBlock(currentBlockNumber);
         GraphicsText textBox = new GraphicsText("+" + point, currentBlock.getX()+6, currentBlock.getY()+40);
         textBox.setFont("Helvetica", FontStyle.BOLD,30);
-        textBox.setFillColor(Color.red);
+        textBox.setFillColor(Color.green);
         canvas.add(textBox);
         canvas.draw();
         canvas.pause(1000);
@@ -223,18 +223,10 @@ public class GameBoard {
         canvas.draw();
     }
 
-    private void showLose(){
-        GraphicsText textBox = new GraphicsText("YOU ARE ALMOST THERE!", canvas.getWidth()*0.3, canvas.getHeight()*0.55);
-        textBox.setFont("Helvetica",FontStyle.BOLD_ITALIC,40);
-        textBox.setFillColor(Color.RED);
-        canvas.add(textBox);
-        canvas.draw();
-    }
-
-    private void showWin(){
-        GraphicsText textBox = new GraphicsText("Congratulations!", canvas.getWidth()*0.3, canvas.getHeight()*0.55);
-        textBox.setFont("Helvetica",FontStyle.BOLD_ITALIC,40);
-        textBox.setFillColor(Color.ORANGE);
+    private void showFinalResult(String s, Color color) {
+        GraphicsText textBox = new GraphicsText(s, canvas.getWidth() * 0.3, canvas.getHeight() * 0.55);
+        textBox.setFont("Helvetica", FontStyle.BOLD_ITALIC, 40);
+        textBox.setFillColor(color);
         canvas.add(textBox);
         canvas.draw();
     }
