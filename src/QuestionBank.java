@@ -21,7 +21,7 @@ public class QuestionBank {
                 new Question("Math", "What is a prime number?", List.of("1001", "1003", "1005", "1008")),
                 new Question("Math", "How do we represent the square root of -1", List.of("i", "k", "j", "There's no such thing!")),
                 new Question("Math", "What is not a valid p-value?", List.of("1.5", "0.5", "0.00001", "0.05")),
-                new Question("Chem", "What is a the most reducing ?", List.of("A", "B", "C", "D")),
+                new Question("Chem", "What is a the most oxidizing element?", List.of("O", "Cl", "F", "N")),
                 new Question("Chem", "What is a commonly used p-value threshold?", List.of("A", "B", "C", "D")),
                 new Question("Chem", "What is a commonly used p-value threshold?", List.of("A", "B", "C", "D")),
                 new Question("Chem", "What is a commonly used p-value threshold?", List.of("A", "B", "C", "D")),
