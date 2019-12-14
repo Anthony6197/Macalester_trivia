@@ -1,4 +1,5 @@
 import comp127graphics.*;
+import comp127graphics.Image;
 import comp127graphics.ui.Button;
 
 import java.awt.*;
@@ -80,13 +81,13 @@ public class GameBoard {
         canvas.add(currentScoreBox);
 
         questionGroupBoundary = new Line(canvas.getWidth()*0.05,canvas.getHeight()*0.6,canvas.getWidth()*0.95,canvas.getHeight()*0.6);
-        questionGroupBoundary.setStrokeColor(Color.GRAY);
+        questionGroupBoundary.setStrokeColor(Color.BLACK);
         questionGroupBoundary.setStrokeWidth(5);
 
-//        Image background = new comp127graphics.Image(0,0);
-//        background.setImagePath("Mac.png");
-//        canvas.add(background);
-//        canvas.drawImage
+        Image background = new comp127graphics.Image(0,0);
+        background.setImagePath("Mac.png");
+        canvas.add(background);
+        canvas.draw();
 
         showScore();
         run();
@@ -94,7 +95,8 @@ public class GameBoard {
 
     private void styleQuestionGroupBox(GraphicsText choiceBox, double x, double y, int fontSize) {
         choiceBox.setCenter(canvas.getWidth() * x,canvas.getHeight() * y);
-        choiceBox.setFont("Helvetica", FontStyle.PLAIN,fontSize);
+        choiceBox.setFont("Helvetica", FontStyle.BOLD, fontSize);
+        choiceBox.setFillColor(Color.WHITE);
         questionGroup.add(choiceBox);
     }
 
