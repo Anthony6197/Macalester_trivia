@@ -35,7 +35,7 @@ public class GameBoard {
     public GameBoard(){
         this.canvas = new CanvasWindow("Graduation Game",1000,1000);
         this.numberCounter = new GraphicsText();
-        numberCounter.setPosition(canvas.getWidth()*0.9,canvas.getHeight()*0.1);
+        numberCounter.setPosition(canvas.getWidth()*0.9,canvas.getHeight()*0.11);
         numberCounter.setFont("Helvetica",FontStyle.BOLD,18);
         canvas.add(numberCounter);
 
