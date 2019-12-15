@@ -12,7 +12,7 @@ public class GameBoard {
     private BlockManager blockManager;
     private QuestionBank allQuestions;
 
-    private GraphicsText numberCounter;
+    private GraphicsText numberCounter = new GraphicsText();
     private GraphicsText currentScoreBox;
     private int currentBlockNumber = -1;
     private int currentTotalScore = 0;
@@ -20,11 +20,11 @@ public class GameBoard {
 
     private GraphicsGroup questionGroup;
     private Line questionGroupBoundary;
-    private GraphicsText questionBox;
-    private GraphicsText choiceBox1;
-    private GraphicsText choiceBox2;
-    private GraphicsText choiceBox3;
-    private GraphicsText choiceBox4;
+    private GraphicsText questionBox = new GraphicsText();
+    private GraphicsText choiceBox1 = new GraphicsText();
+    private GraphicsText choiceBox2 = new GraphicsText();
+    private GraphicsText choiceBox3 = new GraphicsText();
+    private GraphicsText choiceBox4 = new GraphicsText();
 
     private int currentRightAnswer;
     private int userChoice;
@@ -34,63 +34,80 @@ public class GameBoard {
 
     public GameBoard(){
         this.canvas = new CanvasWindow("Graduation Game",1000,1000);
-        this.numberCounter = new GraphicsText();
-        numberCounter.setPosition(canvas.getWidth()*0.9,canvas.getHeight()*0.1);
-        numberCounter.setFont("Helvetica",FontStyle.BOLD,18);
-        canvas.add(numberCounter);
+        canvas.setBackground(new Color(93,198,233));
+        setBackgroundPicture(canvas,"smallLogo.png");
 
-        blockManager = new BlockManager(this.canvas);
-        rand = new Random();
+        GraphicsText introduction = new GraphicsText("Introductions lalalalalala",canvas.getWidth()*0.3,canvas.getHeight()*0.4);
+        introduction.setFont(Font.SANS_SERIF, FontStyle.PLAIN, 18);
+        canvas.add(introduction);
 
-        Button dice = new Button("Move forward");
-        dice.onClick(this::moveForward);
-        dice.setPosition(canvas.getWidth()*0.865,canvas.getHeight()*0.15);
-        canvas.add(dice);
+        GraphicsText title = new GraphicsText("Welcome to Our COMP 127 Project!",canvas.getWidth()*0.2,canvas.getHeight()*0.25);
+        title.setFont(Font.SANS_SERIF, FontStyle.BOLD, 34);
+        title.setFillColor(new Color(239,79,38));
+        canvas.add(title);
 
-        this.questionGroup = new GraphicsGroup();
 
-        createChoiceButton(0,0.14, 0.725);
-        createChoiceButton(1,0.54, 0.725);
-        createChoiceButton(2,0.14, 0.825);
-        createChoiceButton(3,0.54, 0.825);
+        Button startGame = new Button("I Wish to Start!");
+        startGame.onClick(() ->{
+            setBackgroundPicture(canvas,"MacShade.png");
+            canvas.remove(startGame);
 
-        canvas.animate(() ->{
-            if (currentTotalScore < 60 && exceed){
-                showFinalResult("YOU ARE ALMOST THERE!", Color.RED);
-            } else if (currentTotalScore >= 60 && exceed){
-                showFinalResult("Congratulations!", Color.ORANGE);
+            numberCounter.setPosition(canvas.getWidth()*0.9,canvas.getHeight()*0.11);
+            numberCounter.setFont("Helvetica",FontStyle.BOLD,18);
+            canvas.add(numberCounter);
+
+            blockManager = new BlockManager(this.canvas);
+            rand = new Random();
+
+            Button dice = new Button("Move forward");
+            dice.onClick(this::moveForward);
+            dice.setPosition(canvas.getWidth()*0.865,canvas.getHeight()*0.15);
+            canvas.add(dice);
+
+            this.questionGroup = new GraphicsGroup();
+
+            createChoiceButton(0,0.14, 0.725);
+            createChoiceButton(1,0.54, 0.725);
+            createChoiceButton(2,0.14, 0.825);
+            createChoiceButton(3,0.54, 0.825);
+
+            canvas.animate(() ->{
+                if (currentTotalScore < 60 && exceed){
+                    showFinalResult("YOU ARE ALMOST THERE!", Color.RED);
+                } else if (currentTotalScore >= 60 && exceed){
+                    showFinalResult("Congratulations!", Color.ORANGE);
+                }
+            });
+
+            allQuestions = new QuestionBank();
+            styleQuestionGroupBox(choiceBox1,0.25,0.75,18);
+            styleQuestionGroupBox(choiceBox2,0.65,0.75,18);
+            styleQuestionGroupBox(choiceBox3,0.25,0.85,18);
+            styleQuestionGroupBox(choiceBox4,0.65,0.85,18);
+            styleQuestionGroupBox(questionBox,0.25,0.65,20);
+
+            currentScoreBox = new GraphicsText("You have " + currentTotalScore + " points!", canvas.getWidth()*0.05, canvas.getHeight()*0.05);
+            currentScoreBox.setFont("Helvetica",FontStyle.BOLD,25);
+            currentScoreBox.setFillColor(Color.BLACK);
+            canvas.add(currentScoreBox);
+
+            questionGroupBoundary = new Line(canvas.getWidth()*0.05,canvas.getHeight()*0.6,canvas.getWidth()*0.95,canvas.getHeight()*0.6);
+            questionGroupBoundary.setStrokeColor(Color.GRAY);
+            questionGroupBoundary.setStrokeWidth(5);
+
+            showScore();
+            run();
             }
-        });
+        );
+        startGame.setPosition(canvas.getWidth()*0.45, canvas.getHeight()*0.75);
+        canvas.add(startGame);
+    }
 
-        allQuestions = new QuestionBank();
-
-        choiceBox1 = new GraphicsText();
-        styleQuestionGroupBox(choiceBox1,0.25,0.75,18);
-        choiceBox2 = new GraphicsText();
-        styleQuestionGroupBox(choiceBox2,0.65,0.75,18);
-        choiceBox3 = new GraphicsText();
-        styleQuestionGroupBox(choiceBox3,0.25,0.85,18);
-        choiceBox4 = new GraphicsText();
-        styleQuestionGroupBox(choiceBox4,0.65,0.85,18);
-        questionBox = new GraphicsText();
-        styleQuestionGroupBox(questionBox,0.25,0.65,20);
-
-        currentScoreBox = new GraphicsText("You have " + currentTotalScore + " points!", canvas.getWidth()*0.05, canvas.getHeight()*0.05);
-        currentScoreBox.setFont("Helvetica",FontStyle.BOLD,25);
-        currentScoreBox.setFillColor(Color.BLACK);
-        canvas.add(currentScoreBox);
-
-        questionGroupBoundary = new Line(canvas.getWidth()*0.05,canvas.getHeight()*0.6,canvas.getWidth()*0.95,canvas.getHeight()*0.6);
-        questionGroupBoundary.setStrokeColor(Color.BLACK);
-        questionGroupBoundary.setStrokeWidth(5);
-
-        Image background = new comp127graphics.Image(0,0);
-        background.setImagePath("Mac.png");
+    private void setBackgroundPicture(CanvasWindow canvas, String path) {
+        Image background = new Image(0,0);
+        background.setImagePath(path);
         canvas.add(background);
         canvas.draw();
-
-        showScore();
-        run();
     }
 
     private void styleQuestionGroupBox(GraphicsText choiceBox, double x, double y, int fontSize) {
@@ -139,7 +156,6 @@ public class GameBoard {
     private Question selectQuestion(){
         String type = blockManager.getBlock(currentBlockNumber).getType();
         List<Question> questionList = createQuestionList(type);
-        System.out.println(questionList.size());
         int randomNumber = rand.nextInt(questionList.size());
         return allQuestions.deleteQuestion(randomNumber);
     }
@@ -226,8 +242,8 @@ public class GameBoard {
     }
 
     private void showFinalResult(String s, Color color) {
-        GraphicsText textBox = new GraphicsText(s, canvas.getWidth() * 0.3, canvas.getHeight() * 0.55);
-        textBox.setFont("Helvetica", FontStyle.BOLD_ITALIC, 40);
+//        canvas.remove(questionGroup);
+        GraphicsText textBox = new GraphicsText(s, canvas.getWidth() * 0.3, canvas.getHeight() * 0.58);
         textBox.setFillColor(color);
         canvas.add(textBox);
         canvas.draw();
