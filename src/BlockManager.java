@@ -24,7 +24,7 @@ public class BlockManager {
             BlockByType.addAll(availableTypes);
         }
         if(remainder != 0){
-            BlockByType.addAll(availableTypes.subList(0,remainder));
+            BlockByType.addAll(availableTypes.subList(1,remainder));
         }
 
         double leftEdge = canvas.getWidth() * 0.1;

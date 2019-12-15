@@ -35,31 +35,85 @@ public class GameBoard {
     private Random rand;
 
     public GameBoard(){
+        this.rand = new Random();
         this.canvas = new CanvasWindow("Graduation Game",1000,1000);
-        canvas.setBackground(new Color(93,198,233));
+        canvas.setBackground(new Color(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255)));
         setBackgroundPicture(canvas,"smallLogo.png");
 
-        GraphicsText introduction = new GraphicsText("Introductions lalalalalala",canvas.getWidth()*0.3,canvas.getHeight()*0.4);
+        GraphicsText introduction = new GraphicsText("MATH & CHEM TRIVIA",canvas.getWidth()*0.4,canvas.getHeight()*0.5);
         introduction.setFont(Font.SANS_SERIF, FontStyle.PLAIN, 18);
         canvas.add(introduction);
 
-        GraphicsText title = new GraphicsText("Welcome to Our COMP 127 Project!",canvas.getWidth()*0.2,canvas.getHeight()*0.25);
+        GraphicsText title = new GraphicsText("Can you graduate from MSCS and Chem?",canvas.getWidth()*0.2,canvas.getHeight()*0.3);
         title.setFont(Font.SANS_SERIF, FontStyle.BOLD, 34);
         title.setFillColor(new Color(239,79,38));
         canvas.add(title);
 
+        Button help = new Button("Still need help?");
+        help.onClick(()->{
+            CanvasWindow helppage = new  CanvasWindow("help", 300,300);
+            GraphicsGroup instructionbox = new GraphicsGroup();
+            helppage.setBackground(Color.CYAN);
+
+            GraphicsText instructionl0 = new GraphicsText();
+            instructionl0.setPosition(helppage.getWidth() * 0.2, helppage.getHeight() * 0.3);
+            instructionl0.setText("Welcome to Graduation Game!");
+            instructionl0.setFont(Font.DIALOG ,FontStyle.BOLD, 12);
+            instructionbox.add(instructionl0);
+
+            GraphicsText instructionl1 = new GraphicsText();
+            instructionl1.setPosition(helppage.getWidth() * 0.05, helppage.getHeight() * 0.4);
+            instructionl1.setText("Click on 'move forward' to move with random");
+            instructionl1.setFont(Font.DIALOG ,FontStyle.BOLD, 12);
+            instructionbox.add(instructionl1);
+
+            GraphicsText instructionl2 = new GraphicsText();
+            instructionl2.setPosition(helppage.getWidth() * 0.05, helppage.getHeight() * 0.5);
+            instructionl2.setText("steps forwardly, and try your best to answer");
+            instructionl2.setFont(Font.DIALOG ,FontStyle.BOLD, 12);
+            instructionbox.add(instructionl2);
+
+            GraphicsText instructionl3 = new GraphicsText();
+            instructionl3.setPosition(helppage.getWidth() * 0.05, helppage.getHeight() * 0.6);
+            instructionl3.setText("questions to receive points. If you get more than");
+            instructionl3.setFont(Font.DIALOG ,FontStyle.BOLD, 12);
+            instructionbox.add(instructionl3);
+
+            GraphicsText instructionl4 = new GraphicsText();
+            instructionl4.setPosition(helppage.getWidth() * 0.05, helppage.getHeight() * 0.7);
+            instructionl4.setText("60 points before reach the end block, then");
+            instructionl4.setFont(Font.DIALOG ,FontStyle.BOLD, 12);
+            instructionbox.add(instructionl4);
+
+            GraphicsText instructionl5 = new GraphicsText();
+            instructionl5.setPosition(helppage.getWidth() * 0.05, helppage.getHeight() * 0.8);
+            instructionl5.setText("CONGRATULATION!");
+            instructionl5.setFont(Font.DIALOG ,FontStyle.BOLD, 24);
+            instructionl5.setFillColor(Color.ORANGE);
+            instructionbox.add(instructionl5);
+
+            helppage.add(instructionbox);
+
+            Button exit = new Button("return");
+            exit.setPosition(helppage.getWidth() * 0.3, helppage.getHeight() * 0.9);
+            exit.onClick(helppage::closeWindow);
+            helppage.add(exit);
+
+        });
+        help.setPosition(canvas.getWidth() * 0.45, canvas.getHeight() * 0.70);
+        canvas.add(help);
 
         Button startGame = new Button("I Wish to Start!");
         startGame.onClick(() ->{
                     setBackgroundPicture(canvas,"MacShade.png");
                     canvas.remove(startGame);
+                    canvas.remove(help);
 
                     numberCounter.setPosition(canvas.getWidth()*0.9,canvas.getHeight()*0.11);
                     numberCounter.setFont("Helvetica",FontStyle.BOLD,18);
                     canvas.add(numberCounter);
 
                     blockManager = new BlockManager(this.canvas);
-                    rand = new Random();
 
                     Button dice = new Button("Move forward");
                     dice.onClick(this::moveForward);
