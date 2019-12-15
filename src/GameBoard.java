@@ -48,6 +48,7 @@ public class GameBoard {
         title.setFont(Font.SANS_SERIF, FontStyle.BOLD, 34);
         title.setFillColor(new Color(239,79,38));
         canvas.add(title);
+        Button startGame = new Button("I Wish to Start!");
 
         Button help = new Button("Still need help?");
         help.onClick(()->{
@@ -75,7 +76,7 @@ public class GameBoard {
 
             GraphicsText instructionl3 = new GraphicsText();
             instructionl3.setPosition(helppage.getWidth() * 0.05, helppage.getHeight() * 0.6);
-            instructionl3.setText("questions to receive points. If you get more than");
+            instructionl3.setText("questions to receive points. If your points >=");
             instructionl3.setFont(Font.DIALOG ,FontStyle.BOLD, 12);
             instructionbox.add(instructionl3);
 
@@ -95,66 +96,20 @@ public class GameBoard {
             helppage.add(instructionbox);
 
             Button exit = new Button("return");
-            exit.setPosition(helppage.getWidth() * 0.3, helppage.getHeight() * 0.9);
-            exit.onClick(helppage::closeWindow);
+            exit.onClick(()->helppage.getWindowFrame().dispose());
             helppage.add(exit);
+            exit.setPosition(helppage.getWidth() * 0.05, helppage.getHeight() * 0.9);
 
         });
+        startGame.onClick(() ->{
+                    canvas.remove(startGame);
+                    canvas.remove(help);
+                    startGamecallback();
+                }
+        );
         help.setPosition(canvas.getWidth() * 0.45, canvas.getHeight() * 0.70);
         canvas.add(help);
 
-        Button startGame = new Button("I Wish to Start!");
-        startGame.onClick(() ->{
-                    setBackgroundPicture(canvas,"MacShade.png");
-                    canvas.remove(startGame);
-                    canvas.remove(help);
-
-                    numberCounter.setPosition(canvas.getWidth()*0.9,canvas.getHeight()*0.11);
-                    numberCounter.setFont("Helvetica",FontStyle.BOLD,18);
-                    canvas.add(numberCounter);
-
-                    blockManager = new BlockManager(this.canvas);
-
-                    Button dice = new Button("Move forward");
-                    dice.onClick(this::moveForward);
-                    dice.setPosition(canvas.getWidth()*0.865,canvas.getHeight()*0.15);
-                    canvas.add(dice);
-
-                    this.questionGroup = new GraphicsGroup();
-
-                    createChoiceButton(0,0.14, 0.725);
-                    createChoiceButton(1,0.54, 0.725);
-                    createChoiceButton(2,0.14, 0.825);
-                    createChoiceButton(3,0.54, 0.825);
-
-                    canvas.animate(() ->{
-                        if (currentTotalScore < 60 && exceed){
-                            showFinalResult("YOU ARE ALMOST THERE!", Color.RED);
-                        } else if (currentTotalScore >= 60 && exceed){
-                            showFinalResult("Congratulations!", Color.ORANGE);
-                        }
-                    });
-
-                    allQuestions = new QuestionBank();
-                    styleQuestionGroupBox(choiceBox1,0.25,0.75,18);
-                    styleQuestionGroupBox(choiceBox2,0.65,0.75,18);
-                    styleQuestionGroupBox(choiceBox3,0.25,0.85,18);
-                    styleQuestionGroupBox(choiceBox4,0.65,0.85,18);
-                    styleQuestionGroupBox(questionBox,0.25,0.65,20);
-
-                    currentScoreBox = new GraphicsText("You have " + currentTotalScore + " points!", canvas.getWidth()*0.05, canvas.getHeight()*0.05);
-                    currentScoreBox.setFont("Helvetica",FontStyle.BOLD,25);
-                    currentScoreBox.setFillColor(Color.BLACK);
-                    canvas.add(currentScoreBox);
-
-                    questionGroupBoundary = new Line(canvas.getWidth()*0.05,canvas.getHeight()*0.6,canvas.getWidth()*0.95,canvas.getHeight()*0.6);
-                    questionGroupBoundary.setStrokeColor(Color.GRAY);
-                    questionGroupBoundary.setStrokeWidth(5);
-
-                    showScore();
-                    run();
-                }
-        );
         startGame.setPosition(canvas.getWidth()*0.45, canvas.getHeight()*0.75);
         canvas.add(startGame);
     }
@@ -197,6 +152,9 @@ public class GameBoard {
             this.exceed = true;
         }
         updateBlockColor();
+        if (currentTotalScore < 60 && exceed){
+            restart();
+        }
     }
 
     private void updateBlockColor(){
@@ -303,12 +261,69 @@ public class GameBoard {
         canvas.draw();
     }
 
-    private void run(){
-        blockManager.generateBlock();
-    }
 
     private void showScore(){
         currentScoreBox.setText("You have " + currentTotalScore + " points!");
+    }
+
+    public void startGamecallback(){
+        setBackgroundPicture(canvas,"MacShade.png");
+
+        numberCounter.setPosition(canvas.getWidth()*0.9,canvas.getHeight()*0.11);
+        numberCounter.setFont("Helvetica",FontStyle.BOLD,18);
+        canvas.add(numberCounter);
+
+        blockManager = new BlockManager(this.canvas);
+
+        Button dice = new Button("Move forward");
+        dice.onClick(this::moveForward);
+        dice.setPosition(canvas.getWidth()*0.865,canvas.getHeight()*0.15);
+        canvas.add(dice);
+
+        this.questionGroup = new GraphicsGroup();
+
+        createChoiceButton(0,0.14, 0.725);
+        createChoiceButton(1,0.54, 0.725);
+        createChoiceButton(2,0.14, 0.825);
+        createChoiceButton(3,0.54, 0.825);
+
+        canvas.animate(() ->{
+            if (currentTotalScore < 60 && exceed){
+                showFinalResult("YOU ARE ALMOST THERE!", Color.RED);
+            } else if (currentTotalScore >= 60 && exceed){
+                showFinalResult("Congratulations!", Color.ORANGE);
+            }
+        });
+
+        allQuestions = new QuestionBank();
+        styleQuestionGroupBox(choiceBox1,0.25,0.75,18);
+        styleQuestionGroupBox(choiceBox2,0.65,0.75,18);
+        styleQuestionGroupBox(choiceBox3,0.25,0.85,18);
+        styleQuestionGroupBox(choiceBox4,0.65,0.85,18);
+        styleQuestionGroupBox(questionBox,0.25,0.65,20);
+
+        currentScoreBox = new GraphicsText("You have " + currentTotalScore + " points!", canvas.getWidth()*0.05, canvas.getHeight()*0.05);
+        currentScoreBox.setFont("Helvetica",FontStyle.BOLD,25);
+        currentScoreBox.setFillColor(Color.BLACK);
+        canvas.add(currentScoreBox);
+
+        questionGroupBoundary = new Line(canvas.getWidth()*0.05,canvas.getHeight()*0.6,canvas.getWidth()*0.95,canvas.getHeight()*0.6);
+        questionGroupBoundary.setStrokeColor(Color.GRAY);
+        questionGroupBoundary.setStrokeWidth(5);
+
+        showScore();
+        blockManager.generateBlock();
+    }
+
+    public void restart(){
+        Button restart = new Button("restart");
+        restart.setPosition(canvas.getWidth()*0.4,canvas.getHeight()*0.8);
+        canvas.add(restart);
+        restart.onClick(()->{
+            canvas.remove(restart);
+            canvas.removeAll();
+            startGamecallback();
+        });
     }
 
     public static void main(String[] args){
