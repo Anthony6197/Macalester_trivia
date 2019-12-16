@@ -320,49 +320,19 @@ public class GameBoard {
             GraphicsGroup instructionBoxes = new GraphicsGroup();
             helpPage.setBackground(Color.CYAN);
 
-            GraphicsText instructionl0 = new GraphicsText();
-            instructionl0.setPosition(helpPage.getWidth() * 0.2, helpPage.getHeight() * 0.3);
-            instructionl0.setText("Welcome to Graduation Game!");
-            instructionl0.setFont(Font.DIALOG ,FontStyle.BOLD, 12);
-            instructionBoxes.add(instructionl0);
-
-            GraphicsText instructionl1 = new GraphicsText();
-            instructionl1.setPosition(helpPage.getWidth() * 0.05, helpPage.getHeight() * 0.4);
-            instructionl1.setText("Click on 'move forward' to move with random");
-            instructionl1.setFont(Font.DIALOG ,FontStyle.BOLD, 12);
-            instructionBoxes.add(instructionl1);
-
-            GraphicsText instructionl2 = new GraphicsText();
-            instructionl2.setPosition(helpPage.getWidth() * 0.05, helpPage.getHeight() * 0.5);
-            instructionl2.setText("steps forward, and try your best to answer");
-            instructionl2.setFont(Font.DIALOG ,FontStyle.BOLD, 12);
-            instructionBoxes.add(instructionl2);
-
-            GraphicsText instructionl3 = new GraphicsText();
-            instructionl3.setPosition(helpPage.getWidth() * 0.05, helpPage.getHeight() * 0.6);
-            instructionl3.setText("questions to receive points. If your points >=");
-            instructionl3.setFont(Font.DIALOG ,FontStyle.BOLD, 12);
-            instructionBoxes.add(instructionl3);
-
-            GraphicsText instructionl4 = new GraphicsText();
-            instructionl4.setPosition(helpPage.getWidth() * 0.05, helpPage.getHeight() * 0.7);
-            instructionl4.setText("60 points before reaching the end block, then");
-            instructionl4.setFont(Font.DIALOG ,FontStyle.BOLD, 12);
-            instructionBoxes.add(instructionl4);
-
-            GraphicsText instructionl5 = new GraphicsText();
-            instructionl5.setPosition(helpPage.getWidth() * 0.05, helpPage.getHeight() * 0.8);
-            instructionl5.setText("CONGRATULATIONS!");
-            instructionl5.setFont(Font.DIALOG ,FontStyle.BOLD, 24);
-            instructionl5.setFillColor(Color.ORANGE);
-            instructionBoxes.add(instructionl5);
+            createInstructionLine(helpPage, instructionBoxes, 0.2, 0.2, "Welcome to Graduation Game!",12,Color.black);
+            createInstructionLine(helpPage, instructionBoxes, 0.05, 0.3, "Click on 'move forward' to move with random",12,Color.black);
+            createInstructionLine(helpPage, instructionBoxes, 0.05, 0.4, "steps forward, and try your best to answer",12,Color.black);
+            createInstructionLine(helpPage, instructionBoxes, 0.05, 0.5, "questions to receive points. If your points >=",12,Color.black);
+            createInstructionLine(helpPage, instructionBoxes, 0.05, 0.6, "60 points before reaching the end block, then",12,Color.black);
+            createInstructionLine(helpPage,instructionBoxes,0.05,0.78,"CONGRATULATIONS!",24,Color.orange);
 
             helpPage.add(instructionBoxes);
 
             Button exit = new Button("return");
             exit.onClick(()->helpPage.closeWindow());
             helpPage.add(exit);
-            exit.setPosition(helpPage.getWidth() * 0.05, helpPage.getHeight() * 0.9);
+            exit.setPosition(helpPage.getWidth() * 0.4, helpPage.getHeight() * 0.9);
 
         });
         startGame.onClick(() ->{
@@ -384,6 +354,15 @@ public class GameBoard {
 
         startGame.setPosition(canvas.getWidth()*0.45, canvas.getHeight()*0.75);
         canvas.add(startGame);
+    }
+
+    private void createInstructionLine(CanvasWindow helpPage, GraphicsGroup instructionBoxes, double v, double v2, String s, int font, Color color) {
+        GraphicsText instructionLine = new GraphicsText();
+        instructionLine.setPosition(helpPage.getWidth() * v, helpPage.getHeight() * v2);
+        instructionLine.setText(s);
+        instructionLine.setFont(Font.DIALOG, FontStyle.BOLD, font);
+        instructionLine.setFillColor(color);
+        instructionBoxes.add(instructionLine);
     }
 
     public static void main(String[] args){
