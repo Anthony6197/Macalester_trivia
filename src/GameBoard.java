@@ -330,3 +330,5 @@ public class GameBoard {
         new GameBoard();
     }
 }
+//Add a note about another change: A unfinished restart button will show up after player lose nad the
+//starter page will show up with random color.
