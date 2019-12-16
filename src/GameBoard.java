@@ -1,4 +1,3 @@
-
 import comp127graphics.*;
 import comp127graphics.Image;
 import comp127graphics.ui.Button;
@@ -8,14 +7,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+// Author: Yutong Wu and Zuofu Huang COMP 127-03
+
 /**
- * Author: Yutong Wu and Zuofu Huang
- *
+ * Create canvas windows for the game.
  */
 public class GameBoard {
     private CanvasWindow canvas;
 
-    private BlockManager blockManager;
+    private BlockManager blockManager = new BlockManager(this.canvas);
     private QuestionBank allQuestions;
 
     private GraphicsText numberCounter = new GraphicsText();
@@ -24,7 +24,7 @@ public class GameBoard {
     private int currentTotalScore = 0;
     private boolean exceed = false;
 
-    private GraphicsGroup questionGroup;
+    private GraphicsGroup questionGroup = new GraphicsGroup();
     private Line questionGroupBoundary;
     private GraphicsText questionBox = new GraphicsText();
     private GraphicsText choiceBox1 = new GraphicsText();
@@ -36,7 +36,7 @@ public class GameBoard {
     private int userChoice;
     private boolean secondChance = false;
 
-    private Random rand;
+    private Random rand = new Random();
 
     private GameBoard(){
         run();
@@ -85,7 +85,8 @@ public class GameBoard {
     }
 
     /**
-     * Create the button for user to push to move forward with random steps.
+     * Moves forward the user once per dice roll and determines what happens with that move forward.
+     * Show the question if the user hasn't reached the finish line, ask to restart if the user has.
      */
     private void moveForward(){
         int diceRoll = rand.nextInt(6) + 1;
@@ -107,7 +108,7 @@ public class GameBoard {
     }
 
     /**
-     * Change the color of the blocks passed by
+     * Change the color of the blocks that the user passed by.
      */
     private void updateBlockColor(){
         for(Block block: blockManager.getPassedBlocks(currentBlockNumber)){
@@ -136,7 +137,7 @@ public class GameBoard {
     }
 
     /**
-     * Display the question and its choices on the canvas
+     * Display the question and its choices on the canvas in random order.
      */
     private void showQuestion(){
         Question thisQuestion = selectQuestion();
@@ -235,6 +236,17 @@ public class GameBoard {
     }
 
     /**
+     * Determines if the user has won. If the user has exceeded the finish line with less than 60 points, then lose.
+     */
+    private void determineFinalResult() {
+        if (currentTotalScore < 60 && exceed){
+            showFinalResult("YOU ARE ALMOST THERE!", Color.RED);
+        } else if (currentTotalScore >= 60 && exceed){
+            showFinalResult("Congratulations!", Color.ORANGE);
+        }
+    }
+
+    /**
      * Create a GraphicsText object to indicate whether the user won the game, after they have surpassed the finish line.
      */
     private void showFinalResult(String s, Color color) {
@@ -252,6 +264,9 @@ public class GameBoard {
         currentScoreBox.setText("You have " + currentTotalScore + " points!");
     }
 
+    /**
+     * Constructs elements on the main game canvas, including the map, dice buttons and question boxes.
+     */
     private void startGameCallback(){
         setBackgroundPicture(canvas,"MacShade.png");
 
@@ -259,14 +274,10 @@ public class GameBoard {
         numberCounter.setFont("Helvetica",FontStyle.BOLD,18);
         canvas.add(numberCounter);
 
-        blockManager = new BlockManager(this.canvas);
-
         Button dice = new Button("Move forward");
         dice.onClick(this::moveForward);
         dice.setPosition(canvas.getWidth()*0.865,canvas.getHeight()*0.15);
         canvas.add(dice);
-
-        this.questionGroup = new GraphicsGroup();
 
         createChoiceButton(0,0.14, 0.725);
         createChoiceButton(1,0.54, 0.725);
@@ -293,25 +304,32 @@ public class GameBoard {
         blockManager.generateBlock();
     }
 
-    public void restart(){
+    /**
+     * Restart the game after the use has finished one. Remove all question-related objects, if applicable before adding
+     * the restart button.
+     */
+    private void restart(){
         Button restart = new Button("restart");
         restart.setPosition(canvas.getWidth()*0.4,canvas.getHeight()*0.8);
+        canvas.add(restart);
+
         try {
             canvas.remove(questionGroup);
         } catch (Exception NoSuchElementExists){
             return;
         }
 
-        canvas.add(restart);
         restart.onClick(()->{
-            new GameBoard();//canvas.removeAll();
-            canvas.closeWindow();//run();
+            new GameBoard(); // canvas.removeAll(); after the canvasWindow is changed.
+            canvas.closeWindow(); // run();
         });
     }
 
+    /**
+     * Constructs the starter interface with welcome, instructions and buttons that allow the user to start the game.
+     * On click, the method will call startGameCallBack that starts one game.
+     */
     private void run(){
-
-        this.rand = new Random();
         this.canvas = new CanvasWindow("Graduation Game",1000,1000);
         canvas.setBackground(new Color(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255)));
         setBackgroundPicture(canvas,"smallLogo.png");
@@ -324,9 +342,15 @@ public class GameBoard {
         title.setFont(Font.SANS_SERIF, FontStyle.BOLD, 34);
         title.setFillColor(new Color(239,79,38));
         canvas.add(title);
+
         Button startGame = new Button("I Wish to Start!");
+        startGame.setCenter(canvas.getWidth()*0.45, canvas.getHeight()*0.75);
+        canvas.add(startGame);
 
         Button help = new Button("Need Help?");
+        help.setCenter(canvas.getWidth() * 0.45, canvas.getHeight() * 0.65);
+        canvas.add(help);
+
         help.onClick(()->{
             CanvasWindow helpPage = new CanvasWindow("help", 300,300);
             GraphicsGroup instructionBoxes = new GraphicsGroup();
@@ -351,23 +375,13 @@ public class GameBoard {
             canvas.remove(startGame);
             canvas.remove(help);
             startGameCallback();
-            canvas.animate(() ->{
-                if (currentTotalScore < 60 && exceed){
-                    showFinalResult("YOU ARE ALMOST THERE!", Color.RED);
-                } else if (currentTotalScore >= 60 && exceed){
-                    showFinalResult("Congratulations!", Color.ORANGE);
-                }
-            });
+
+            canvas.animate(this::determineFinalResult);
         });
-
-        help.setPosition(canvas.getWidth() * 0.45, canvas.getHeight() * 0.70);
-        canvas.add(help);
-
-        startGame.setPosition(canvas.getWidth()*0.45, canvas.getHeight()*0.75);
-        canvas.add(startGame);
     }
 
-    private void createInstructionLine(CanvasWindow helpPage, GraphicsGroup instructionBoxes, double v, double v2, String s, int font, Color color) {
+    private void createInstructionLine(CanvasWindow helpPage, GraphicsGroup instructionBoxes, double v, double v2,
+                                       String s, int font, Color color) {
         GraphicsText instructionLine = new GraphicsText();
         instructionLine.setPosition(helpPage.getWidth() * v, helpPage.getHeight() * v2);
         instructionLine.setText(s);
@@ -380,5 +394,6 @@ public class GameBoard {
         new GameBoard();
     }
 }
-//Add a note about another change: A unfinished restart button will show up after player lose nad the
+
+//Add a note about another change: A unfinished restart button will show up after player lose and the
 //starter page will show up with random color.
