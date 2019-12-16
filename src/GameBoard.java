@@ -108,16 +108,29 @@ public class GameBoard {
         }
     }
 
+    /**
+     * Change the color of the blocks passed by
+     */
     private void updateBlockColor(){
         for(Block block: blockManager.getPassedBlocks(currentBlockNumber)){
             block.setActive(true);
         }
 
     }
+
+    /**
+     * Create a list of questions given the types of the blocks
+     * @param type the type of blocks (either "math" or "chem")
+     * @return return a list of questions corresponding to blocks
+     */
     private List<Question> createQuestionList(String type){
         return allQuestions.findAllQuestionsOfType(type);
     }
 
+    /**
+     * Select a question from the question list created by creatQuestionList
+     * @return the list of questions with the chosen questions deleted from it
+     */
     private Question selectQuestion(){
         String type = blockManager.getBlock(currentBlockNumber).getType();
         List<Question> questionList = createQuestionList(type);
@@ -125,6 +138,9 @@ public class GameBoard {
         return allQuestions.deleteQuestion(randomNumber);
     }
 
+    /**
+     * Display the question and its choices on the canvas
+     */
     private void showQuestion(){
         Question thisQuestion = selectQuestion();
         questionBox.setText(thisQuestion.getPrompt());
@@ -141,6 +157,11 @@ public class GameBoard {
         canvas.add(questionGroupBoundary);
     }
 
+    /**
+     * Check if users make the right choice. If correct, the questions and choices will be removed from canvas.
+     * if it is incorrect, the user will have another attempt allowed to recover it for the first wrong question and only one
+     * attempt allowed for the other questions.
+     */
     private void ifCorrect(){
         int score = rand.nextInt(4) + 8;
         if (userChoice == currentRightAnswer){
@@ -169,6 +190,11 @@ public class GameBoard {
         showScore();
     }
 
+    /**
+     * Show whether the user make the right or wrong choices in text and display it on the canvas
+     * @param text the text used to described the result
+     * @param color the color of the text
+     */
     private void giveResultInText(String text, Color color) {
         GraphicsText textBox = new GraphicsText(text, canvas.getWidth()*0.5, canvas.getHeight()*0.535);
         textBox.setFont("Helvetica", FontStyle.BOLD,30);
@@ -179,6 +205,10 @@ public class GameBoard {
         canvas.remove(textBox);
     }
 
+    /**
+     * Display the number of users get from the current correct question they
+     * @param point scores the user can get
+     */
     private void giveScoreOnMap(int point){
         Block currentBlock = blockManager.getBlock(currentBlockNumber);
         GraphicsText textBox = new GraphicsText("+" + point, currentBlock.getX()+6, currentBlock.getY()+40);
@@ -189,6 +219,7 @@ public class GameBoard {
         canvas.pause(1000);
         canvas.remove(textBox);
     }
+
 
     private void markResultOnMap(int i, int i2, int i3, int i4, Color color, int i5, int i6, int i7, int i8) {
         Block currentBlock = blockManager.getBlock(currentBlockNumber);
@@ -204,7 +235,6 @@ public class GameBoard {
     }
 
     private void showFinalResult(String s, Color color) {
-//        canvas.remove(questionGroup);
         GraphicsText textBox = new GraphicsText(s, canvas.getWidth() * 0.3, canvas.getHeight() * 0.58);
         textBox.setFont("Helvetica", FontStyle.BOLD_ITALIC, 40);
         textBox.setFillColor(color);
