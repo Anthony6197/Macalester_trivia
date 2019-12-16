@@ -44,67 +44,67 @@ public class GameBoard {
         introduction.setFont(Font.SANS_SERIF, FontStyle.PLAIN, 18);
         canvas.add(introduction);
 
-        GraphicsText title = new GraphicsText("Can you graduate from MSCS and Chem?",canvas.getWidth()*0.2,canvas.getHeight()*0.3);
+        GraphicsText title = new GraphicsText("Can you graduate from MSCS and Chemistry?",canvas.getWidth()*0.2,canvas.getHeight()*0.3);
         title.setFont(Font.SANS_SERIF, FontStyle.BOLD, 34);
         title.setFillColor(new Color(239,79,38));
         canvas.add(title);
         Button startGame = new Button("I Wish to Start!");
 
-        Button help = new Button("Still need help?");
+        Button help = new Button("Need help?");
         help.onClick(()->{
-            CanvasWindow helppage = new  CanvasWindow("help", 300,300);
-            GraphicsGroup instructionbox = new GraphicsGroup();
-            helppage.setBackground(Color.CYAN);
+            CanvasWindow helpPage = new CanvasWindow("help", 300,300);
+            GraphicsGroup instructionBoxes = new GraphicsGroup();
+            helpPage.setBackground(Color.CYAN);
 
             GraphicsText instructionl0 = new GraphicsText();
-            instructionl0.setPosition(helppage.getWidth() * 0.2, helppage.getHeight() * 0.3);
+            instructionl0.setPosition(helpPage.getWidth() * 0.2, helpPage.getHeight() * 0.3);
             instructionl0.setText("Welcome to Graduation Game!");
             instructionl0.setFont(Font.DIALOG ,FontStyle.BOLD, 12);
-            instructionbox.add(instructionl0);
+            instructionBoxes.add(instructionl0);
 
             GraphicsText instructionl1 = new GraphicsText();
-            instructionl1.setPosition(helppage.getWidth() * 0.05, helppage.getHeight() * 0.4);
+            instructionl1.setPosition(helpPage.getWidth() * 0.05, helpPage.getHeight() * 0.4);
             instructionl1.setText("Click on 'move forward' to move with random");
             instructionl1.setFont(Font.DIALOG ,FontStyle.BOLD, 12);
-            instructionbox.add(instructionl1);
+            instructionBoxes.add(instructionl1);
 
             GraphicsText instructionl2 = new GraphicsText();
-            instructionl2.setPosition(helppage.getWidth() * 0.05, helppage.getHeight() * 0.5);
-            instructionl2.setText("steps forwardly, and try your best to answer");
+            instructionl2.setPosition(helpPage.getWidth() * 0.05, helpPage.getHeight() * 0.5);
+            instructionl2.setText("steps forward, and try your best to answer");
             instructionl2.setFont(Font.DIALOG ,FontStyle.BOLD, 12);
-            instructionbox.add(instructionl2);
+            instructionBoxes.add(instructionl2);
 
             GraphicsText instructionl3 = new GraphicsText();
-            instructionl3.setPosition(helppage.getWidth() * 0.05, helppage.getHeight() * 0.6);
+            instructionl3.setPosition(helpPage.getWidth() * 0.05, helpPage.getHeight() * 0.6);
             instructionl3.setText("questions to receive points. If your points >=");
             instructionl3.setFont(Font.DIALOG ,FontStyle.BOLD, 12);
-            instructionbox.add(instructionl3);
+            instructionBoxes.add(instructionl3);
 
             GraphicsText instructionl4 = new GraphicsText();
-            instructionl4.setPosition(helppage.getWidth() * 0.05, helppage.getHeight() * 0.7);
-            instructionl4.setText("60 points before reach the end block, then");
+            instructionl4.setPosition(helpPage.getWidth() * 0.05, helpPage.getHeight() * 0.7);
+            instructionl4.setText("60 points before reaching the end block, then");
             instructionl4.setFont(Font.DIALOG ,FontStyle.BOLD, 12);
-            instructionbox.add(instructionl4);
+            instructionBoxes.add(instructionl4);
 
             GraphicsText instructionl5 = new GraphicsText();
-            instructionl5.setPosition(helppage.getWidth() * 0.05, helppage.getHeight() * 0.8);
-            instructionl5.setText("CONGRATULATION!");
+            instructionl5.setPosition(helpPage.getWidth() * 0.05, helpPage.getHeight() * 0.8);
+            instructionl5.setText("CONGRATULATIONS!");
             instructionl5.setFont(Font.DIALOG ,FontStyle.BOLD, 24);
             instructionl5.setFillColor(Color.ORANGE);
-            instructionbox.add(instructionl5);
+            instructionBoxes.add(instructionl5);
 
-            helppage.add(instructionbox);
+            helpPage.add(instructionBoxes);
 
             Button exit = new Button("return");
-            exit.onClick(()->helppage.getWindowFrame().dispose());
-            helppage.add(exit);
-            exit.setPosition(helppage.getWidth() * 0.05, helppage.getHeight() * 0.9);
+            exit.onClick(()->helpPage.getWindowFrame().dispose());
+            helpPage.add(exit);
+            exit.setPosition(helpPage.getWidth() * 0.05, helpPage.getHeight() * 0.9);
 
         });
         startGame.onClick(() ->{
                     canvas.remove(startGame);
                     canvas.remove(help);
-                    startGamecallback();
+                    startGameCallback();
                 }
         );
         help.setPosition(canvas.getWidth() * 0.45, canvas.getHeight() * 0.70);
@@ -266,7 +266,7 @@ public class GameBoard {
         currentScoreBox.setText("You have " + currentTotalScore + " points!");
     }
 
-    public void startGamecallback(){
+    public void startGameCallback(){
         setBackgroundPicture(canvas,"MacShade.png");
 
         numberCounter.setPosition(canvas.getWidth()*0.9,canvas.getHeight()*0.11);
@@ -322,7 +322,7 @@ public class GameBoard {
         restart.onClick(()->{
             canvas.remove(restart);
             canvas.removeAll();
-            startGamecallback();
+            startGameCallback();
         });
     }
 
