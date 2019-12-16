@@ -293,18 +293,19 @@ public class GameBoard {
         blockManager.generateBlock();
     }
 
-    private void restart(){
+    public void restart(){
         Button restart = new Button("restart");
         restart.setPosition(canvas.getWidth()*0.4,canvas.getHeight()*0.8);
         try {
             canvas.remove(questionGroup);
-        } catch(Exception NoSuchElementExists){
+        } catch (Exception NoSuchElementExists){
             return;
         }
+
         canvas.add(restart);
-        restart.onClick(() -> {
-            new GameBoard(); // canvas.removeAll();
-            canvas.closeWindow(); // run();
+        restart.onClick(()->{
+            new GameBoard();//canvas.removeAll();
+            canvas.closeWindow();//run();
         });
     }
 
