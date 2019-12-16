@@ -299,8 +299,8 @@ public class GameBoard {
         canvas.remove(questionGroup);
         canvas.add(restart);
         restart.onClick(()->{
-            canvas.removeAll();
-            run();
+            new GameBoard();//canvas.removeAll();
+            canvas.closeWindow();//run();
         });
     }
 
