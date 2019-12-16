@@ -14,7 +14,6 @@ import java.util.Random;
  */
 public class GameBoard {
     private CanvasWindow canvas;
-
     private BlockManager blockManager;
     private QuestionBank allQuestions;
 
@@ -26,11 +25,11 @@ public class GameBoard {
 
     private GraphicsGroup questionGroup = new GraphicsGroup();
     private Line questionGroupBoundary;
-    private GraphicsText questionBox = new GraphicsText();
-    private GraphicsText choiceBox1 = new GraphicsText();
-    private GraphicsText choiceBox2 = new GraphicsText();
-    private GraphicsText choiceBox3 = new GraphicsText();
-    private GraphicsText choiceBox4 = new GraphicsText();
+    private GraphicsText question = new GraphicsText();
+    private GraphicsText choice1 = new GraphicsText();
+    private GraphicsText choice2 = new GraphicsText();
+    private GraphicsText choice3 = new GraphicsText();
+    private GraphicsText choice4 = new GraphicsText();
 
     private int currentRightAnswer;
     private int userChoice;
@@ -56,16 +55,16 @@ public class GameBoard {
 
     /**
      * Set the graphic box to show the choices for each question
-     * @param choiceBox the graphic box used to contain choices
+     * @param box the graphic box used to contain choices and the question stem
      * @param x the x coordinate of the graphic box
      * @param y the y coordinate of the graphic box
      * @param fontSize the font size of the strings used for illustrating choices
      */
-    private void styleQuestionGroupBox(GraphicsText choiceBox, double x, double y, int fontSize) {
-        choiceBox.setCenter(canvas.getWidth() * x,canvas.getHeight() * y);
-        choiceBox.setFont("Helvetica", FontStyle.BOLD, fontSize);
-        choiceBox.setFillColor(Color.WHITE);
-        questionGroup.add(choiceBox);
+    private void styleQuestionGroupBox(GraphicsText box, double x, double y, int fontSize) {
+        box.setCenter(canvas.getWidth() * x,canvas.getHeight() * y);
+        box.setFont("Helvetica", FontStyle.BOLD, fontSize);
+        box.setFillColor(Color.WHITE);
+        questionGroup.add(box);
     }
 
     /**
@@ -102,9 +101,6 @@ public class GameBoard {
             this.exceed = true;
         }
         updateBlockColor();
-        if (currentTotalScore < 60 && exceed){
-            restart();
-        }
     }
 
     /**
@@ -121,15 +117,15 @@ public class GameBoard {
      */
     private void showQuestion(){
         Question thisQuestion = allQuestions.selectQuestion(blockManager, currentBlockNumber);
-        questionBox.setText(thisQuestion.getPrompt());
+        question.setText(thisQuestion.getPrompt());
         String rightAnswer = thisQuestion.getRightAnswer();
         List<String> listOfChoices = thisQuestion.getAllChoices();
 
         Collections.shuffle(listOfChoices);
-        choiceBox1.setText(listOfChoices.get(0));
-        choiceBox2.setText(listOfChoices.get(1));
-        choiceBox3.setText(listOfChoices.get(2));
-        choiceBox4.setText(listOfChoices.get(3));
+        choice1.setText(listOfChoices.get(0));
+        choice2.setText(listOfChoices.get(1));
+        choice3.setText(listOfChoices.get(2));
+        choice4.setText(listOfChoices.get(3));
         currentRightAnswer = listOfChoices.indexOf(rightAnswer);
 
         canvas.add(questionGroupBoundary);
@@ -165,7 +161,7 @@ public class GameBoard {
                 secondChance = true;
             }
         }
-        showScore();
+        updateScore();
     }
 
     /**
@@ -174,7 +170,7 @@ public class GameBoard {
      * @param color the color of the text
      */
     private void giveResultInText(String text, Color color) {
-        GraphicsText textBox = new GraphicsText(text, canvas.getWidth()*0.5, canvas.getHeight()*0.535);
+        GraphicsText textBox = new GraphicsText(text, canvas.getWidth()*0.46, canvas.getHeight()*0.535);
         textBox.setFont("Helvetica", FontStyle.BOLD,30);
         textBox.setFillColor(color);
         canvas.add(textBox);
@@ -221,6 +217,7 @@ public class GameBoard {
     private void determineFinalResult() {
         if (currentTotalScore < 60 && exceed){
             showFinalResult("YOU ARE ALMOST THERE!", Color.RED);
+            restart();
         } else if (currentTotalScore >= 60 && exceed){
             showFinalResult("Congratulations!", Color.ORANGE);
         }
@@ -238,9 +235,9 @@ public class GameBoard {
     }
 
     /**
-     * GraphicsText object that indicates the current score, at the very top left of the canvas.
+     * Update the current score after each question is answered correctly, at the very top left of the canvas.
      */
-    private void showScore(){
+    private void updateScore(){
         currentScoreBox.setText("You have " + currentTotalScore + " points!");
     }
 
@@ -267,22 +264,24 @@ public class GameBoard {
         createChoiceButton(3,0.54, 0.825);
 
         allQuestions = new QuestionBank();
-        styleQuestionGroupBox(choiceBox1,0.25,0.75,18);
-        styleQuestionGroupBox(choiceBox2,0.65,0.75,18);
-        styleQuestionGroupBox(choiceBox3,0.25,0.85,18);
-        styleQuestionGroupBox(choiceBox4,0.65,0.85,18);
-        styleQuestionGroupBox(questionBox,0.25,0.65,20);
+        styleQuestionGroupBox(choice1,0.25,0.75,18);
+        styleQuestionGroupBox(choice2,0.65,0.75,18);
+        styleQuestionGroupBox(choice3,0.25,0.85,18);
+        styleQuestionGroupBox(choice4,0.65,0.85,18);
+        styleQuestionGroupBox(question,0.25,0.65,20);
 
-        currentScoreBox = new GraphicsText("You have " + currentTotalScore + " points!", canvas.getWidth()*0.05, canvas.getHeight()*0.05);
+        currentScoreBox = new GraphicsText("You have " + currentTotalScore + " points!",
+                canvas.getWidth()*0.05, canvas.getHeight()*0.05);
         currentScoreBox.setFont("Helvetica",FontStyle.BOLD,25);
-        currentScoreBox.setFillColor(Color.BLACK);
+        currentScoreBox.setFillColor(new Color(253,174,21));
         canvas.add(currentScoreBox);
 
-        questionGroupBoundary = new Line(canvas.getWidth()*0.05,canvas.getHeight()*0.6,canvas.getWidth()*0.95,canvas.getHeight()*0.6);
+        questionGroupBoundary = new Line(canvas.getWidth()*0.05,canvas.getHeight()*0.6,
+                canvas.getWidth()*0.95,canvas.getHeight()*0.6);
         questionGroupBoundary.setStrokeColor(Color.GRAY);
         questionGroupBoundary.setStrokeWidth(5);
 
-        showScore();
+        updateScore();
         blockManager.generateBlock();
     }
 
@@ -316,35 +315,37 @@ public class GameBoard {
         canvas.setBackground(new Color(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255)));
         setBackgroundPicture(canvas,"smallLogo.png");
 
-        GraphicsText introduction = new GraphicsText("MATH & CHEM TRIVIA",canvas.getWidth()*0.4,canvas.getHeight()*0.5);
+        GraphicsText introduction = new GraphicsText("MATH & CHEM TRIVIA",
+                canvas.getWidth()*0.35,canvas.getHeight()*0.55);
         introduction.setFont(Font.SANS_SERIF, FontStyle.BOLD, 26);
         canvas.add(introduction);
 
-        GraphicsText title = new GraphicsText("Can you graduate from MSCS and Chemistry?",canvas.getWidth()*0.17,canvas.getHeight()*0.3);
+        GraphicsText title = new GraphicsText("Can you graduate from MSCS and Chemistry?",
+                canvas.getWidth()*0.14,canvas.getHeight()*0.35);
         title.setFont(Font.SANS_SERIF, FontStyle.BOLD, 34);
         title.setFillColor(new Color(239,79,38));
         canvas.add(title);
 
         Button startGame = new Button("I Wish to Start!");
-        startGame.setCenter(canvas.getWidth()*0.45, canvas.getHeight()*0.75);
+        startGame.setCenter(canvas.getWidth()*0.5, canvas.getHeight()*0.85);
         canvas.add(startGame);
 
         Button helpButton = new Button("Need Help?");
-        helpButton.setCenter(canvas.getWidth() * 0.45, canvas.getHeight() * 0.65);
+        helpButton.setCenter(canvas.getWidth() * 0.5, canvas.getHeight() * 0.75);
         canvas.add(helpButton);
 
         helpButton.onClick(()->{
-            CanvasWindow helpPage = new CanvasWindow("Instructions", 300,300);
+            CanvasWindow helpPage = new CanvasWindow("Instructions", 310,300);
             GraphicsGroup instructionBoxes = new GraphicsGroup();
             helpPage.add(instructionBoxes);
-            helpPage.setBackground(Color.CYAN);
+            helpPage.setBackground(new Color(90,180,53));
 
             createInstructionLine(helpPage, instructionBoxes, 0.2, 0.2, "Welcome to Graduation Game!",12,Color.black);
             createInstructionLine(helpPage, instructionBoxes, 0.05, 0.3, "Click on 'move forward' to move with random",12,Color.black);
             createInstructionLine(helpPage, instructionBoxes, 0.05, 0.4, "steps forward, and try your best to answer",12,Color.black);
             createInstructionLine(helpPage, instructionBoxes, 0.05, 0.5, "questions to receive points. If your points >=",12,Color.black);
             createInstructionLine(helpPage, instructionBoxes, 0.05, 0.6, "60 points before reaching the end block, then",12,Color.black);
-            createInstructionLine(helpPage,instructionBoxes,0.05,0.78,"CONGRATULATIONS!",24,Color.orange);
+            createInstructionLine(helpPage,instructionBoxes,0.1,0.78,"CONGRATULATIONS!",24,Color.orange);
 
             Button exit = new Button("return");
             exit.onClick(() -> helpPage.getWindowFrame().dispose());
