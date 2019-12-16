@@ -16,6 +16,7 @@ public class Question{
         this.choices = Objects.requireNonNull(myChoices);
     }
 
+
     public String getType(){
         return type;
     }
@@ -34,6 +35,17 @@ public class Question{
      */
     public List<String> getAllChoices(){
         return new ArrayList<>(choices);
+    }
+
+    public static void changeX(int x){
+        x ++;
+        System.out.println(x);
+    }
+
+    public static void main(String[] args) {
+        int i = 0;
+        changeX(i);
+        System.out.println(i);
     }
 }
 

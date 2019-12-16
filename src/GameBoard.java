@@ -8,6 +8,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Author: Yutong Wu and Zuofu Huang
+ *
+ */
 public class GameBoard {
     private CanvasWindow canvas;
 
@@ -34,86 +38,16 @@ public class GameBoard {
 
     private Random rand;
 
+
     public GameBoard(){
-        this.rand = new Random();
-        this.canvas = new CanvasWindow("Graduation Game",1000,1000);
-        canvas.setBackground(new Color(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255)));
-        setBackgroundPicture(canvas,"smallLogo.png");
-
-        GraphicsText introduction = new GraphicsText("MATH & CHEM TRIVIA",canvas.getWidth()*0.4,canvas.getHeight()*0.5);
-        introduction.setFont(Font.SANS_SERIF, FontStyle.PLAIN, 18);
-        canvas.add(introduction);
-
-        GraphicsText title = new GraphicsText("Can you graduate from MSCS and Chemistry?",canvas.getWidth()*0.2,canvas.getHeight()*0.3);
-        title.setFont(Font.SANS_SERIF, FontStyle.BOLD, 34);
-        title.setFillColor(new Color(239,79,38));
-        canvas.add(title);
-        Button startGame = new Button("I Wish to Start!");
-
-        Button help = new Button("Need help?");
-        help.onClick(()->{
-            CanvasWindow helpPage = new CanvasWindow("help", 300,300);
-            GraphicsGroup instructionBoxes = new GraphicsGroup();
-            helpPage.setBackground(Color.CYAN);
-
-            GraphicsText instructionl0 = new GraphicsText();
-            instructionl0.setPosition(helpPage.getWidth() * 0.2, helpPage.getHeight() * 0.3);
-            instructionl0.setText("Welcome to Graduation Game!");
-            instructionl0.setFont(Font.DIALOG ,FontStyle.BOLD, 12);
-            instructionBoxes.add(instructionl0);
-
-            GraphicsText instructionl1 = new GraphicsText();
-            instructionl1.setPosition(helpPage.getWidth() * 0.05, helpPage.getHeight() * 0.4);
-            instructionl1.setText("Click on 'move forward' to move with random");
-            instructionl1.setFont(Font.DIALOG ,FontStyle.BOLD, 12);
-            instructionBoxes.add(instructionl1);
-
-            GraphicsText instructionl2 = new GraphicsText();
-            instructionl2.setPosition(helpPage.getWidth() * 0.05, helpPage.getHeight() * 0.5);
-            instructionl2.setText("steps forward, and try your best to answer");
-            instructionl2.setFont(Font.DIALOG ,FontStyle.BOLD, 12);
-            instructionBoxes.add(instructionl2);
-
-            GraphicsText instructionl3 = new GraphicsText();
-            instructionl3.setPosition(helpPage.getWidth() * 0.05, helpPage.getHeight() * 0.6);
-            instructionl3.setText("questions to receive points. If your points >=");
-            instructionl3.setFont(Font.DIALOG ,FontStyle.BOLD, 12);
-            instructionBoxes.add(instructionl3);
-
-            GraphicsText instructionl4 = new GraphicsText();
-            instructionl4.setPosition(helpPage.getWidth() * 0.05, helpPage.getHeight() * 0.7);
-            instructionl4.setText("60 points before reaching the end block, then");
-            instructionl4.setFont(Font.DIALOG ,FontStyle.BOLD, 12);
-            instructionBoxes.add(instructionl4);
-
-            GraphicsText instructionl5 = new GraphicsText();
-            instructionl5.setPosition(helpPage.getWidth() * 0.05, helpPage.getHeight() * 0.8);
-            instructionl5.setText("CONGRATULATIONS!");
-            instructionl5.setFont(Font.DIALOG ,FontStyle.BOLD, 24);
-            instructionl5.setFillColor(Color.ORANGE);
-            instructionBoxes.add(instructionl5);
-
-            helpPage.add(instructionBoxes);
-
-            Button exit = new Button("return");
-            exit.onClick(()->helpPage.getWindowFrame().dispose());
-            helpPage.add(exit);
-            exit.setPosition(helpPage.getWidth() * 0.05, helpPage.getHeight() * 0.9);
-
-        });
-        startGame.onClick(() ->{
-                    canvas.remove(startGame);
-                    canvas.remove(help);
-                    startGameCallback();
-                }
-        );
-        help.setPosition(canvas.getWidth() * 0.45, canvas.getHeight() * 0.70);
-        canvas.add(help);
-
-        startGame.setPosition(canvas.getWidth()*0.45, canvas.getHeight()*0.75);
-        canvas.add(startGame);
+        run();
     }
 
+    /**
+     * Set the background image of a canvas
+     * @param canvas the canvas need to be set
+     * @param path the file path of the background image
+     */
     private void setBackgroundPicture(CanvasWindow canvas, String path) {
         Image background = new Image(0,0);
         background.setImagePath(path);
@@ -121,6 +55,13 @@ public class GameBoard {
         canvas.draw();
     }
 
+    /**
+     * Set the grapoic box to show the choices for each question
+     * @param choiceBox the graphic box used to contain choices
+     * @param x the x coordinate of the graphic box
+     * @param y the y coordinate of the graphic box
+     * @param fontSize the font size of the strings used for illustrating choices
+     */
     private void styleQuestionGroupBox(GraphicsText choiceBox, double x, double y, int fontSize) {
         choiceBox.setCenter(canvas.getWidth() * x,canvas.getHeight() * y);
         choiceBox.setFont("Helvetica", FontStyle.BOLD, fontSize);
@@ -128,6 +69,12 @@ public class GameBoard {
         questionGroup.add(choiceBox);
     }
 
+    /**
+     * Set the choice button for user to push to answer the multiple choice questions
+     * @param choiceIndex the index of choices
+     * @param x the x coordinate of the choice button
+     * @param y the y coordinate of the choice button
+     */
     private void createChoiceButton(int choiceIndex, double x, double y) {
         Button button = new Button("Choose " + (char) ('A' + choiceIndex));
         button.onClick(() -> {
@@ -138,6 +85,10 @@ public class GameBoard {
         questionGroup.add(button);
     }
 
+    /**
+     * Create the button for user to push to move forwardly with random steps
+     *
+     */
     private void moveForward(){
         int diceRoll = rand.nextInt(6) + 1;
         numberCounter.setText(diceRoll + " steps");
@@ -287,14 +238,6 @@ public class GameBoard {
         createChoiceButton(2,0.14, 0.825);
         createChoiceButton(3,0.54, 0.825);
 
-        canvas.animate(() ->{
-            if (currentTotalScore < 60 && exceed){
-                showFinalResult("YOU ARE ALMOST THERE!", Color.RED);
-            } else if (currentTotalScore >= 60 && exceed){
-                showFinalResult("Congratulations!", Color.ORANGE);
-            }
-        });
-
         allQuestions = new QuestionBank();
         styleQuestionGroupBox(choiceBox1,0.25,0.75,18);
         styleQuestionGroupBox(choiceBox2,0.65,0.75,18);
@@ -320,15 +263,103 @@ public class GameBoard {
         restart.setPosition(canvas.getWidth()*0.4,canvas.getHeight()*0.8);
         canvas.add(restart);
         restart.onClick(()->{
-            canvas.remove(restart);
             canvas.removeAll();
-            startGameCallback();
+            run();
         });
+    }
+
+    public void run(){
+        this.rand = new Random();
+        this.canvas = new CanvasWindow("Graduation Game",1000,1000);
+        canvas.setBackground(new Color(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255)));
+        setBackgroundPicture(canvas,"smallLogo.png");
+
+        GraphicsText introduction = new GraphicsText("MATH & CHEM TRIVIA",canvas.getWidth()*0.4,canvas.getHeight()*0.5);
+        introduction.setFont(Font.SANS_SERIF, FontStyle.PLAIN, 18);
+        canvas.add(introduction);
+
+        GraphicsText title = new GraphicsText("Can you graduate from MSCS and Chemistry?",canvas.getWidth()*0.2,canvas.getHeight()*0.3);
+        title.setFont(Font.SANS_SERIF, FontStyle.BOLD, 34);
+        title.setFillColor(new Color(239,79,38));
+        canvas.add(title);
+        Button startGame = new Button("I Wish to Start!");
+
+        Button help = new Button("Need help?");
+        help.onClick(()->{
+            CanvasWindow helpPage = new CanvasWindow("help", 300,300);
+            GraphicsGroup instructionBoxes = new GraphicsGroup();
+            helpPage.setBackground(Color.CYAN);
+
+            GraphicsText instructionl0 = new GraphicsText();
+            instructionl0.setPosition(helpPage.getWidth() * 0.2, helpPage.getHeight() * 0.3);
+            instructionl0.setText("Welcome to Graduation Game!");
+            instructionl0.setFont(Font.DIALOG ,FontStyle.BOLD, 12);
+            instructionBoxes.add(instructionl0);
+
+            GraphicsText instructionl1 = new GraphicsText();
+            instructionl1.setPosition(helpPage.getWidth() * 0.05, helpPage.getHeight() * 0.4);
+            instructionl1.setText("Click on 'move forward' to move with random");
+            instructionl1.setFont(Font.DIALOG ,FontStyle.BOLD, 12);
+            instructionBoxes.add(instructionl1);
+
+            GraphicsText instructionl2 = new GraphicsText();
+            instructionl2.setPosition(helpPage.getWidth() * 0.05, helpPage.getHeight() * 0.5);
+            instructionl2.setText("steps forward, and try your best to answer");
+            instructionl2.setFont(Font.DIALOG ,FontStyle.BOLD, 12);
+            instructionBoxes.add(instructionl2);
+
+            GraphicsText instructionl3 = new GraphicsText();
+            instructionl3.setPosition(helpPage.getWidth() * 0.05, helpPage.getHeight() * 0.6);
+            instructionl3.setText("questions to receive points. If your points >=");
+            instructionl3.setFont(Font.DIALOG ,FontStyle.BOLD, 12);
+            instructionBoxes.add(instructionl3);
+
+            GraphicsText instructionl4 = new GraphicsText();
+            instructionl4.setPosition(helpPage.getWidth() * 0.05, helpPage.getHeight() * 0.7);
+            instructionl4.setText("60 points before reaching the end block, then");
+            instructionl4.setFont(Font.DIALOG ,FontStyle.BOLD, 12);
+            instructionBoxes.add(instructionl4);
+
+            GraphicsText instructionl5 = new GraphicsText();
+            instructionl5.setPosition(helpPage.getWidth() * 0.05, helpPage.getHeight() * 0.8);
+            instructionl5.setText("CONGRATULATIONS!");
+            instructionl5.setFont(Font.DIALOG ,FontStyle.BOLD, 24);
+            instructionl5.setFillColor(Color.ORANGE);
+            instructionBoxes.add(instructionl5);
+
+            helpPage.add(instructionBoxes);
+
+            Button exit = new Button("return");
+            exit.onClick(()->helpPage.getWindowFrame().dispose());
+            helpPage.add(exit);
+            exit.setPosition(helpPage.getWidth() * 0.05, helpPage.getHeight() * 0.9);
+
+        });
+        startGame.onClick(() ->{
+                    canvas.remove(startGame);
+                    canvas.remove(help);
+                    startGameCallback();
+                    canvas.animate(() ->{
+                        if (currentTotalScore < 60 && exceed){
+                            showFinalResult("YOU ARE ALMOST THERE!", Color.RED);
+                        } else if (currentTotalScore >= 60 && exceed){
+                            showFinalResult("Congratulations!", Color.ORANGE);
+                        }
+                    });
+
+                }
+        );
+        help.setPosition(canvas.getWidth() * 0.45, canvas.getHeight() * 0.70);
+        canvas.add(help);
+
+        startGame.setPosition(canvas.getWidth()*0.45, canvas.getHeight()*0.75);
+        canvas.add(startGame);
     }
 
     public static void main(String[] args){
         new GameBoard();
     }
+
 }
 //Add a note about another change: A unfinished restart button will show up after player lose nad the
 //starter page will show up with random color.
