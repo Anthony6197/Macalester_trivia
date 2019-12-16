@@ -293,8 +293,8 @@ public class GameBoard {
         restart.setPosition(canvas.getWidth()*0.4,canvas.getHeight()*0.8);
         canvas.add(restart);
         restart.onClick(()->{
-            canvas.removeAll();
-            run();
+            canvas.closeWindow();
+            new GameBoard();
         });
     }
 
@@ -360,7 +360,7 @@ public class GameBoard {
             helpPage.add(instructionBoxes);
 
             Button exit = new Button("return");
-            exit.onClick(()->helpPage.getWindowFrame().dispose());
+            exit.onClick(()->helpPage.closeWindow());
             helpPage.add(exit);
             exit.setPosition(helpPage.getWidth() * 0.05, helpPage.getHeight() * 0.9);
 
