@@ -67,7 +67,7 @@ public class QuestionBank {
      * Select a question from the list of questions filtered by findAllQuestionsOfType
      * @return the list of questions with the chosen question deleted from it
      */
-    public Question selectQuestion(BlockManager blockManager, int currentBlockNumber){
+    Question selectQuestion(BlockManager blockManager, int currentBlockNumber){
         String type = blockManager.getBlock(currentBlockNumber).getType();
         List<Question> questionList = findAllQuestionsOfType(type);
         int randomNumber = rand.nextInt(questionList.size());

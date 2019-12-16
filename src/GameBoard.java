@@ -157,6 +157,7 @@ public class GameBoard {
                 markResultOnMap(10, 10, 45, 45, Color.red, 45, 10, 10, 45);
                 canvas.remove(questionGroup);
                 canvas.remove(questionGroupBoundary);
+                secondChance = false;
             } else {
                 secondChance = true;
             }
@@ -227,8 +228,9 @@ public class GameBoard {
      * Create a GraphicsText object to indicate whether the user won the game, after they have surpassed the finish line.
      */
     private void showFinalResult(String s, Color color) {
-        GraphicsText textBox = new GraphicsText(s, canvas.getWidth() * 0.3, canvas.getHeight() * 0.58);
+        GraphicsText textBox = new GraphicsText(s);
         textBox.setFont("Helvetica", FontStyle.BOLD_ITALIC, 40);
+        textBox.setCenter(canvas.getWidth() * 0.5, canvas.getHeight() * 0.565);
         textBox.setFillColor(color);
         canvas.add(textBox);
         canvas.draw();
@@ -247,8 +249,8 @@ public class GameBoard {
     private void startGameCallback(){
         setBackgroundPicture(canvas,"MacShade.png");
 
-        numberCounter.setPosition(canvas.getWidth()*0.9,canvas.getHeight()*0.11);
-        numberCounter.setFont("Helvetica",FontStyle.BOLD,18);
+        numberCounter.setPosition(canvas.getWidth()*0.89,canvas.getHeight()*0.12);
+        numberCounter.setFont("Helvetica",FontStyle.BOLD,22);
         canvas.add(numberCounter);
 
         blockManager = new BlockManager(this.canvas);
@@ -291,12 +293,12 @@ public class GameBoard {
      */
     private void restart(){
         Button restart = new Button("restart");
-        restart.setPosition(canvas.getWidth()*0.4,canvas.getHeight()*0.8);
+        restart.setCenter(canvas.getWidth()*0.5,canvas.getHeight()*0.8);
         canvas.add(restart);
 
         try {
             canvas.remove(questionGroup);
-        } catch (Exception NoSuchElementExists){
+        } catch (Exception NoSuchElementException){
             return;
         }
 
@@ -312,26 +314,26 @@ public class GameBoard {
      */
     private void run(){
         this.canvas = new CanvasWindow("Graduation Game",1000,1000);
-        canvas.setBackground(new Color(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255)));
+        canvas.setBackground(new Color(rand.nextInt(200)+55,rand.nextInt(150)+105,rand.nextInt(200)+55));
         setBackgroundPicture(canvas,"smallLogo.png");
 
         GraphicsText introduction = new GraphicsText("MATH & CHEM TRIVIA",
-                canvas.getWidth()*0.35,canvas.getHeight()*0.55);
+                canvas.getWidth()*0.35,canvas.getHeight()*0.45);
         introduction.setFont(Font.SANS_SERIF, FontStyle.BOLD, 26);
         canvas.add(introduction);
 
         GraphicsText title = new GraphicsText("Can you graduate from MSCS and Chemistry?",
-                canvas.getWidth()*0.14,canvas.getHeight()*0.35);
+                canvas.getWidth()*0.14,canvas.getHeight()*0.3);
         title.setFont(Font.SANS_SERIF, FontStyle.BOLD, 34);
         title.setFillColor(new Color(239,79,38));
         canvas.add(title);
 
         Button startGame = new Button("I Wish to Start!");
-        startGame.setCenter(canvas.getWidth()*0.5, canvas.getHeight()*0.85);
+        startGame.setCenter(canvas.getWidth()*0.5, canvas.getHeight()*0.7);
         canvas.add(startGame);
 
         Button helpButton = new Button("Need Help?");
-        helpButton.setCenter(canvas.getWidth() * 0.5, canvas.getHeight() * 0.75);
+        helpButton.setCenter(canvas.getWidth() * 0.5, canvas.getHeight() * 0.6);
         canvas.add(helpButton);
 
         helpButton.onClick(()->{
@@ -345,7 +347,7 @@ public class GameBoard {
             createInstructionLine(helpPage, instructionBoxes, 0.05, 0.4, "steps forward, and try your best to answer",12,Color.black);
             createInstructionLine(helpPage, instructionBoxes, 0.05, 0.5, "questions to receive points. If your points >=",12,Color.black);
             createInstructionLine(helpPage, instructionBoxes, 0.05, 0.6, "60 points before reaching the end block, then",12,Color.black);
-            createInstructionLine(helpPage,instructionBoxes,0.1,0.78,"CONGRATULATIONS!",24,Color.orange);
+            createInstructionLine(helpPage, instructionBoxes,0.1,0.78,"CONGRATULATIONS!",24,Color.orange);
 
             Button exit = new Button("return");
             exit.onClick(() -> helpPage.getWindowFrame().dispose());
