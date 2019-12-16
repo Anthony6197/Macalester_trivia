@@ -38,8 +38,7 @@ public class GameBoard {
 
     private Random rand;
 
-
-    public GameBoard(){
+    private GameBoard(){
         run();
     }
 
@@ -86,8 +85,7 @@ public class GameBoard {
     }
 
     /**
-     * Create the button for user to push to move forwardly with random steps
-     *
+     * Create the button for user to push to move forward with random steps.
      */
     private void moveForward(){
         int diceRoll = rand.nextInt(6) + 1;
@@ -115,7 +113,6 @@ public class GameBoard {
         for(Block block: blockManager.getPassedBlocks(currentBlockNumber)){
             block.setActive(true);
         }
-
     }
 
     /**
@@ -159,8 +156,8 @@ public class GameBoard {
 
     /**
      * Check if users make the right choice. If correct, the questions and choices will be removed from canvas.
-     * if it is incorrect, the user will have another attempt allowed to recover it for the first wrong question and only one
-     * attempt allowed for the other questions.
+     * if it is incorrect, the user will have another attempt (and only one) to retry the question. They will receive
+     * half of what the question is worth if they get correct the second time.
      */
     private void ifCorrect(){
         int score = rand.nextInt(4) + 8;
@@ -220,7 +217,10 @@ public class GameBoard {
         canvas.remove(textBox);
     }
 
-
+    /**
+     * Construct green checks or red crosses on the map to indicate if the user gets the question right/wrong.
+     * Use two line objects from GraphicsObject.
+     */
     private void markResultOnMap(int i, int i2, int i3, int i4, Color color, int i5, int i6, int i7, int i8) {
         Block currentBlock = blockManager.getBlock(currentBlockNumber);
         Line line1 = new Line(currentBlock.getX() + i, currentBlock.getY() + i2, currentBlock.getX() + i3, currentBlock.getY() + i4);
@@ -234,6 +234,9 @@ public class GameBoard {
         canvas.draw();
     }
 
+    /**
+     * Create a GraphicsText object to indicate whether the user won the game, after they have surpassed the finish line.
+     */
     private void showFinalResult(String s, Color color) {
         GraphicsText textBox = new GraphicsText(s, canvas.getWidth() * 0.3, canvas.getHeight() * 0.58);
         textBox.setFont("Helvetica", FontStyle.BOLD_ITALIC, 40);
@@ -242,12 +245,14 @@ public class GameBoard {
         canvas.draw();
     }
 
-
+    /**
+     * GraphicsText object that indicates the current score, at the very top left of the canvas.
+     */
     private void showScore(){
         currentScoreBox.setText("You have " + currentTotalScore + " points!");
     }
 
-    public void startGameCallback(){
+    private void startGameCallback(){
         setBackgroundPicture(canvas,"MacShade.png");
 
         numberCounter.setPosition(canvas.getWidth()*0.9,canvas.getHeight()*0.11);
@@ -291,6 +296,7 @@ public class GameBoard {
     public void restart(){
         Button restart = new Button("restart");
         restart.setPosition(canvas.getWidth()*0.4,canvas.getHeight()*0.8);
+        canvas.remove(questionGroup);
         canvas.add(restart);
         restart.onClick(()->{
             canvas.removeAll();
@@ -298,23 +304,24 @@ public class GameBoard {
         });
     }
 
-    public void run(){
+    private void run(){
+
         this.rand = new Random();
         this.canvas = new CanvasWindow("Graduation Game",1000,1000);
         canvas.setBackground(new Color(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255)));
         setBackgroundPicture(canvas,"smallLogo.png");
 
         GraphicsText introduction = new GraphicsText("MATH & CHEM TRIVIA",canvas.getWidth()*0.4,canvas.getHeight()*0.5);
-        introduction.setFont(Font.SANS_SERIF, FontStyle.PLAIN, 18);
+        introduction.setFont(Font.SANS_SERIF, FontStyle.BOLD, 26);
         canvas.add(introduction);
 
-        GraphicsText title = new GraphicsText("Can you graduate from MSCS and Chemistry?",canvas.getWidth()*0.2,canvas.getHeight()*0.3);
+        GraphicsText title = new GraphicsText("Can you graduate from MSCS and Chemistry?",canvas.getWidth()*0.17,canvas.getHeight()*0.3);
         title.setFont(Font.SANS_SERIF, FontStyle.BOLD, 34);
         title.setFillColor(new Color(239,79,38));
         canvas.add(title);
         Button startGame = new Button("I Wish to Start!");
 
-        Button help = new Button("Need help?");
+        Button help = new Button("Need Help?");
         help.onClick(()->{
             CanvasWindow helpPage = new CanvasWindow("help", 300,300);
             GraphicsGroup instructionBoxes = new GraphicsGroup();
@@ -330,25 +337,24 @@ public class GameBoard {
             helpPage.add(instructionBoxes);
 
             Button exit = new Button("return");
-            exit.onClick(()->helpPage.getWindowFrame().dispose());
+            exit.onClick(() -> helpPage.getWindowFrame().dispose());
             helpPage.add(exit);
             exit.setPosition(helpPage.getWidth() * 0.4, helpPage.getHeight() * 0.9);
-
         });
-        startGame.onClick(() ->{
-                    canvas.remove(startGame);
-                    canvas.remove(help);
-                    startGameCallback();
-                    canvas.animate(() ->{
-                        if (currentTotalScore < 60 && exceed){
-                            showFinalResult("YOU ARE ALMOST THERE!", Color.RED);
-                        } else if (currentTotalScore >= 60 && exceed){
-                            showFinalResult("Congratulations!", Color.ORANGE);
-                        }
-                    });
 
+        startGame.onClick(() ->{
+            canvas.remove(startGame);
+            canvas.remove(help);
+            startGameCallback();
+            canvas.animate(() ->{
+                if (currentTotalScore < 60 && exceed){
+                    showFinalResult("YOU ARE ALMOST THERE!", Color.RED);
+                } else if (currentTotalScore >= 60 && exceed){
+                    showFinalResult("Congratulations!", Color.ORANGE);
                 }
-        );
+            });
+        });
+
         help.setPosition(canvas.getWidth() * 0.45, canvas.getHeight() * 0.70);
         canvas.add(help);
 
@@ -368,7 +374,6 @@ public class GameBoard {
     public static void main(String[] args){
         new GameBoard();
     }
-
 }
 //Add a note about another change: A unfinished restart button will show up after player lose nad the
 //starter page will show up with random color.
