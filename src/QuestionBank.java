@@ -4,6 +4,9 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 
 public class QuestionBank {
+    /**
+     * A master list of 32 questions that will randomly appear in the trivia. The first in the list of choices is the correct answer.
+     */
     private static final List<Question> masterQuestionList = List.of(
             new Question("Math", "What is a commonly used p-value threshold?", List.of("0.05", "0.1", "0.01", "What are you talking about?")),
             new Question("Math", "What class is Math 236?", List.of("Linear Algebra", "Calculus 3", "Capstone", "Calc 2")),
@@ -41,10 +44,16 @@ public class QuestionBank {
     );
     private List<Question> availableQuestions = new ArrayList<>(masterQuestionList);
 
+    /*
+     * Given the index that a question is at, remove and return the same question.
+     */
     public Question deleteQuestion(int index){
         return availableQuestions.remove(index);
     }
 
+    /**
+     * Return all available questions (those who have not appeared) of a specific type in the master list.
+     */
     public List<Question> findAllQuestionsOfType(String type){
         return availableQuestions.stream()
                 .filter(question -> question.getType().equals(type))

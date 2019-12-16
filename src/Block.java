@@ -3,11 +3,14 @@ import comp127graphics.Rectangle;
 
 import java.awt.*;
 
-public class Block extends Rectangle {
-
+class Block extends Rectangle {
     private final int index;
     private String type;
 
+    /**
+     * The constructor of each block: each block takes in four parameters of the rectangle and
+     * its position in the group of blocks. Initialize with deactivated state.
+     */
     public Block(double x, double y, double width, double height, int index) {
         super(x, y, width, height);
         this.index = index;
