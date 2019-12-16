@@ -15,7 +15,7 @@ import java.util.Random;
 public class GameBoard {
     private CanvasWindow canvas;
 
-    private BlockManager blockManager = new BlockManager(this.canvas);
+    private BlockManager blockManager;
     private QuestionBank allQuestions;
 
     private GraphicsText numberCounter = new GraphicsText();
@@ -55,7 +55,7 @@ public class GameBoard {
     }
 
     /**
-     * Set the grapoic box to show the choices for each question
+     * Set the graphic box to show the choices for each question
      * @param choiceBox the graphic box used to contain choices
      * @param x the x coordinate of the graphic box
      * @param y the y coordinate of the graphic box
@@ -117,30 +117,10 @@ public class GameBoard {
     }
 
     /**
-     * Create a list of questions given the types of the blocks
-     * @param type the type of blocks (either "math" or "chem")
-     * @return return a list of questions corresponding to blocks
-     */
-    private List<Question> createQuestionList(String type){
-        return allQuestions.findAllQuestionsOfType(type);
-    }
-
-    /**
-     * Select a question from the question list created by creatQuestionList
-     * @return the list of questions with the chosen questions deleted from it
-     */
-    private Question selectQuestion(){
-        String type = blockManager.getBlock(currentBlockNumber).getType();
-        List<Question> questionList = createQuestionList(type);
-        int randomNumber = rand.nextInt(questionList.size());
-        return allQuestions.deleteQuestion(randomNumber);
-    }
-
-    /**
      * Display the question and its choices on the canvas in random order.
      */
     private void showQuestion(){
-        Question thisQuestion = selectQuestion();
+        Question thisQuestion = allQuestions.selectQuestion(blockManager, currentBlockNumber);
         questionBox.setText(thisQuestion.getPrompt());
         String rightAnswer = thisQuestion.getRightAnswer();
         List<String> listOfChoices = thisQuestion.getAllChoices();
@@ -158,7 +138,7 @@ public class GameBoard {
     /**
      * Check if users make the right choice. If correct, the questions and choices will be removed from canvas.
      * if it is incorrect, the user will have another attempt (and only one) to retry the question. They will receive
-     * half of what the question is worth if they get correct the second time.
+     * half of what the question is worth if they are correct the second time.
      */
     private void ifCorrect(){
         int score = rand.nextInt(4) + 8;
@@ -274,6 +254,8 @@ public class GameBoard {
         numberCounter.setFont("Helvetica",FontStyle.BOLD,18);
         canvas.add(numberCounter);
 
+        blockManager = new BlockManager(this.canvas);
+
         Button dice = new Button("Move forward");
         dice.onClick(this::moveForward);
         dice.setPosition(canvas.getWidth()*0.865,canvas.getHeight()*0.15);
@@ -347,13 +329,14 @@ public class GameBoard {
         startGame.setCenter(canvas.getWidth()*0.45, canvas.getHeight()*0.75);
         canvas.add(startGame);
 
-        Button help = new Button("Need Help?");
-        help.setCenter(canvas.getWidth() * 0.45, canvas.getHeight() * 0.65);
-        canvas.add(help);
+        Button helpButton = new Button("Need Help?");
+        helpButton.setCenter(canvas.getWidth() * 0.45, canvas.getHeight() * 0.65);
+        canvas.add(helpButton);
 
-        help.onClick(()->{
-            CanvasWindow helpPage = new CanvasWindow("help", 300,300);
+        helpButton.onClick(()->{
+            CanvasWindow helpPage = new CanvasWindow("Instructions", 300,300);
             GraphicsGroup instructionBoxes = new GraphicsGroup();
+            helpPage.add(instructionBoxes);
             helpPage.setBackground(Color.CYAN);
 
             createInstructionLine(helpPage, instructionBoxes, 0.2, 0.2, "Welcome to Graduation Game!",12,Color.black);
@@ -363,8 +346,6 @@ public class GameBoard {
             createInstructionLine(helpPage, instructionBoxes, 0.05, 0.6, "60 points before reaching the end block, then",12,Color.black);
             createInstructionLine(helpPage,instructionBoxes,0.05,0.78,"CONGRATULATIONS!",24,Color.orange);
 
-            helpPage.add(instructionBoxes);
-
             Button exit = new Button("return");
             exit.onClick(() -> helpPage.getWindowFrame().dispose());
             helpPage.add(exit);
@@ -373,7 +354,7 @@ public class GameBoard {
 
         startGame.onClick(() ->{
             canvas.remove(startGame);
-            canvas.remove(help);
+            canvas.remove(helpButton);
             startGameCallback();
 
             canvas.animate(this::determineFinalResult);
@@ -395,5 +376,5 @@ public class GameBoard {
     }
 }
 
-//Add a note about another change: A unfinished restart button will show up after player lose and the
-//starter page will show up with random color.
+// Add a note about another change: A unfinished restart button will show up after player lose and the
+// starter page will show up with random color.

@@ -1,8 +1,13 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static java.util.stream.Collectors.toList;
 
+/**
+ * * A master list of 32 questions that will randomly appear in the trivia.
+ * The first in the masterQuestionList is the correct answer.
+ */
 public class QuestionBank {
     private static final List<Question> masterQuestionList = List.of(
             new Question("Math", "What is a commonly used p-value threshold?", List.of("0.05", "0.1", "0.01", "What are you talking about?")),
@@ -40,14 +45,32 @@ public class QuestionBank {
 
     );
     private List<Question> availableQuestions = new ArrayList<>(masterQuestionList);
+    private Random rand = new Random();
 
-    public Question deleteQuestion(int index){
+    /**
+     * Given the index that a question is at, remove and return the same question.
+     */
+    private Question deleteQuestion(int index){
         return availableQuestions.remove(index);
     }
 
-    public List<Question> findAllQuestionsOfType(String type){
+    /**
+     * Return all available questions (those who have not appeared) of a specific type in the master list.
+     */
+    private List<Question> findAllQuestionsOfType(String type){
         return availableQuestions.stream()
                 .filter(question -> question.getType().equals(type))
                 .collect(toList());
+    }
+
+    /**
+     * Select a question from the list of questions filtered by findAllQuestionsOfType
+     * @return the list of questions with the chosen question deleted from it
+     */
+    public Question selectQuestion(BlockManager blockManager, int currentBlockNumber){
+        String type = blockManager.getBlock(currentBlockNumber).getType();
+        List<Question> questionList = findAllQuestionsOfType(type);
+        int randomNumber = rand.nextInt(questionList.size());
+        return deleteQuestion(randomNumber);
     }
 }
