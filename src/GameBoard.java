@@ -42,6 +42,63 @@ public class GameBoard {
     }
 
     /**
+     * Constructs the starter interface with welcome, instructions and buttons that allow the user to start the game.
+     * On click, the method will call startGameCallBack that starts one game.
+     */
+    private void run(){
+        this.canvas = new CanvasWindow("Graduation Game",1000,1000);
+        canvas.setBackground(new Color(rand.nextInt(200)+55,rand.nextInt(150)+105,rand.nextInt(200)+55));
+        setBackgroundPicture(canvas,"smallLogo.png");
+
+        GraphicsText introduction = new GraphicsText("MATH & CHEM TRIVIA",
+                canvas.getWidth()*0.35,canvas.getHeight()*0.45);
+        introduction.setFont(Font.SANS_SERIF, FontStyle.BOLD, 26);
+        canvas.add(introduction);
+
+        GraphicsText title = new GraphicsText("Can you graduate from MSCS and Chemistry?",
+                canvas.getWidth()*0.14,canvas.getHeight()*0.3);
+        title.setFont(Font.SANS_SERIF, FontStyle.BOLD, 34);
+        title.setFillColor(new Color(239,79,38));
+        canvas.add(title);
+
+        Button startGame = new Button("I Wish to Start!");
+        startGame.setCenter(canvas.getWidth()*0.5, canvas.getHeight()*0.7);
+        canvas.add(startGame);
+
+        Button helpButton = new Button("Need Help?");
+        helpButton.setCenter(canvas.getWidth() * 0.5, canvas.getHeight() * 0.6);
+        canvas.add(helpButton);
+
+        helpButton.onClick(()->{
+            CanvasWindow helpPage = new CanvasWindow("Instructions", 310,300);
+            GraphicsGroup instructionBoxes = new GraphicsGroup();
+            helpPage.add(instructionBoxes);
+            helpPage.setBackground(new Color(90,180,53));
+
+            createInstructionLine(helpPage, instructionBoxes, 0.2, 0.2, "Welcome to Graduation Game!",12,Color.black);
+            createInstructionLine(helpPage, instructionBoxes, 0.05, 0.3, "Click on 'move forward' to move with random",12,Color.black);
+            createInstructionLine(helpPage, instructionBoxes, 0.05, 0.4, "steps forward, and try your best to answer",12,Color.black);
+            createInstructionLine(helpPage, instructionBoxes, 0.05, 0.5, "questions to receive points. If your points >=",12,Color.black);
+            createInstructionLine(helpPage, instructionBoxes, 0.05, 0.6, "60 points before reaching the end block, then",12,Color.black);
+            createInstructionLine(helpPage, instructionBoxes,0.1,0.78,"CONGRATULATIONS!",24,Color.orange);
+
+            Button exit = new Button("return");
+            exit.onClick(() -> helpPage.closeWindow());
+            helpPage.add(exit);
+            exit.setPosition(helpPage.getWidth() * 0.4, helpPage.getHeight() * 0.9);
+        });
+
+        startGame.onClick(() ->{
+            canvas.remove(startGame);
+            canvas.remove(helpButton);
+            startGameCallback();
+
+            canvas.animate(this::determineFinalResult);
+        });
+    }
+
+
+    /**
      * Set the background image of a canvas
      * @param canvas the canvas need to be set
      * @param path the file path of the background image
@@ -309,65 +366,19 @@ public class GameBoard {
     }
 
     /**
-     * Constructs the starter interface with welcome, instructions and buttons that allow the user to start the game.
-     * On click, the method will call startGameCallBack that starts one game.
+     * Helper function used to regulate the instruction lines display in the pops up after clicking on the "help" button
+     * @param helpPage the page pops up after clicking on the "help" button
+     * @param instructionBoxes the graphic groups consists of labels that display the instruction
+     * @param prop the proportion of width of help page used to determine the x coordinate of the GraphicText
+     * @param prop2 the proportion of height of help page used to determine the x coordinate of the GraphicText
+     * @param s the instruction lines
+     * @param font the font of the text of instruction lines
+     * @param color the color of the text of the instruction lines
      */
-    private void run(){
-        this.canvas = new CanvasWindow("Graduation Game",1000,1000);
-        canvas.setBackground(new Color(rand.nextInt(200)+55,rand.nextInt(150)+105,rand.nextInt(200)+55));
-        setBackgroundPicture(canvas,"smallLogo.png");
-
-        GraphicsText introduction = new GraphicsText("MATH & CHEM TRIVIA",
-                canvas.getWidth()*0.35,canvas.getHeight()*0.45);
-        introduction.setFont(Font.SANS_SERIF, FontStyle.BOLD, 26);
-        canvas.add(introduction);
-
-        GraphicsText title = new GraphicsText("Can you graduate from MSCS and Chemistry?",
-                canvas.getWidth()*0.14,canvas.getHeight()*0.3);
-        title.setFont(Font.SANS_SERIF, FontStyle.BOLD, 34);
-        title.setFillColor(new Color(239,79,38));
-        canvas.add(title);
-
-        Button startGame = new Button("I Wish to Start!");
-        startGame.setCenter(canvas.getWidth()*0.5, canvas.getHeight()*0.7);
-        canvas.add(startGame);
-
-        Button helpButton = new Button("Need Help?");
-        helpButton.setCenter(canvas.getWidth() * 0.5, canvas.getHeight() * 0.6);
-        canvas.add(helpButton);
-
-        helpButton.onClick(()->{
-            CanvasWindow helpPage = new CanvasWindow("Instructions", 310,300);
-            GraphicsGroup instructionBoxes = new GraphicsGroup();
-            helpPage.add(instructionBoxes);
-            helpPage.setBackground(new Color(90,180,53));
-
-            createInstructionLine(helpPage, instructionBoxes, 0.2, 0.2, "Welcome to Graduation Game!",12,Color.black);
-            createInstructionLine(helpPage, instructionBoxes, 0.05, 0.3, "Click on 'move forward' to move with random",12,Color.black);
-            createInstructionLine(helpPage, instructionBoxes, 0.05, 0.4, "steps forward, and try your best to answer",12,Color.black);
-            createInstructionLine(helpPage, instructionBoxes, 0.05, 0.5, "questions to receive points. If your points >=",12,Color.black);
-            createInstructionLine(helpPage, instructionBoxes, 0.05, 0.6, "60 points before reaching the end block, then",12,Color.black);
-            createInstructionLine(helpPage, instructionBoxes,0.1,0.78,"CONGRATULATIONS!",24,Color.orange);
-
-            Button exit = new Button("return");
-            exit.onClick(() -> helpPage.getWindowFrame().dispose());
-            helpPage.add(exit);
-            exit.setPosition(helpPage.getWidth() * 0.4, helpPage.getHeight() * 0.9);
-        });
-
-        startGame.onClick(() ->{
-            canvas.remove(startGame);
-            canvas.remove(helpButton);
-            startGameCallback();
-
-            canvas.animate(this::determineFinalResult);
-        });
-    }
-
-    private void createInstructionLine(CanvasWindow helpPage, GraphicsGroup instructionBoxes, double v, double v2,
+    private void createInstructionLine(CanvasWindow helpPage, GraphicsGroup instructionBoxes, double prop, double prop2,
                                        String s, int font, Color color) {
         GraphicsText instructionLine = new GraphicsText();
-        instructionLine.setPosition(helpPage.getWidth() * v, helpPage.getHeight() * v2);
+        instructionLine.setPosition(helpPage.getWidth() * prop, helpPage.getHeight() * prop2);
         instructionLine.setText(s);
         instructionLine.setFont(Font.DIALOG, FontStyle.BOLD, font);
         instructionLine.setFillColor(color);

@@ -3,6 +3,10 @@ import comp127graphics.Rectangle;
 
 import java.awt.*;
 
+/**
+ * Author: Yutong Wu and Zuofu Huang
+ *
+ */
 class Block extends Rectangle {
     private final int index;
     private String type;
