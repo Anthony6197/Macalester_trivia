@@ -4,6 +4,14 @@ import comp127graphics.GraphicsText;
 import java.util.List;
 import java.util.ArrayList;
 
+/**
+ * @author Yutong Wu
+ * @author Zuofu Huang
+ *
+ * Block manager class is used to generate map blocks, store the blocks passed by into a list
+ * for to set colors and assign types to each map blocks it generates.
+ */
+
 public class BlockManager {
     private CanvasWindow canvas;
     private List<Block> blocks = new ArrayList<>();

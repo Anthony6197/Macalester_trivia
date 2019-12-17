@@ -7,7 +7,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-// Author: Yutong Wu and Zuofu Huang COMP 127-03
+/**
+ * @author Yutong Wu
+ * @author Zuofu Huang
+ */
 
 /**
  * Create canvas windows for the game.

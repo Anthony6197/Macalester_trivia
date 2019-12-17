@@ -2,6 +2,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * @author Zuofu Huang
+ *
+ * Math and Chemistry questions
+ */
 public class Question{
     private String prompt;
     private final List<String> choices;
