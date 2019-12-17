@@ -17,7 +17,7 @@ public class GameBoard {
     private BlockManager blockManager;
     private QuestionBank allQuestions;
 
-    private GraphicsText numberCounter = new GraphicsText();
+    private GraphicsText stepsCounter = new GraphicsText();
     private GraphicsText currentScoreBox;
     private int currentBlockNumber = -1;
     private int currentTotalScore = 0;
@@ -48,7 +48,7 @@ public class GameBoard {
     private void run(){
         this.canvas = new CanvasWindow("Graduation Game",1000,1000);
         canvas.setBackground(new Color(rand.nextInt(200)+55,rand.nextInt(150)+105,rand.nextInt(200)+55));
-        setBackgroundPicture(canvas,"smallLogo.png");
+        setBackgroundPicture(canvas, "smallLogo.png");
 
         GraphicsText introduction = new GraphicsText("MATH & CHEM TRIVIA",
                 canvas.getWidth()*0.35,canvas.getHeight()*0.45);
@@ -58,7 +58,7 @@ public class GameBoard {
         GraphicsText title = new GraphicsText("Can you graduate from MSCS and Chemistry?",
                 canvas.getWidth()*0.14,canvas.getHeight()*0.3);
         title.setFont(Font.SANS_SERIF, FontStyle.BOLD, 34);
-        title.setFillColor(new Color(239,79,38));
+        title.setFillColor(new Color(0, 0, 0));
         canvas.add(title);
 
         Button startGame = new Button("I Wish to Start!");
@@ -83,7 +83,7 @@ public class GameBoard {
             createInstructionLine(helpPage, instructionBoxes,0.1,0.78,"CONGRATULATIONS!",24,Color.orange);
 
             Button exit = new Button("return");
-            exit.onClick(() -> helpPage.closeWindow());
+            exit.onClick(helpPage::closeWindow);
             helpPage.add(exit);
             exit.setPosition(helpPage.getWidth() * 0.4, helpPage.getHeight() * 0.9);
         });
@@ -146,7 +146,7 @@ public class GameBoard {
      */
     private void moveForward(){
         int diceRoll = rand.nextInt(6) + 1;
-        numberCounter.setText(diceRoll + " steps");
+        stepsCounter.setText(diceRoll + " steps");
         if (this.currentBlockNumber + diceRoll < blockManager.getBlockQuantity()){
             this.currentBlockNumber += diceRoll;
             showQuestion();
@@ -278,6 +278,7 @@ public class GameBoard {
             restart();
         } else if (currentTotalScore >= 60 && exceed){
             showFinalResult("Congratulations!", Color.ORANGE);
+            canvas.closeWindow();
         }
     }
 
@@ -304,11 +305,11 @@ public class GameBoard {
      * Constructs elements on the main game canvas, including the map, dice buttons and question boxes.
      */
     private void startGameCallback(){
-        setBackgroundPicture(canvas,"MacShade.png");
+        setBackgroundPicture(canvas, "MacShade.png");
 
-        numberCounter.setPosition(canvas.getWidth()*0.89,canvas.getHeight()*0.12);
-        numberCounter.setFont("Helvetica",FontStyle.BOLD,22);
-        canvas.add(numberCounter);
+        stepsCounter.setPosition(canvas.getWidth()*0.89,canvas.getHeight()*0.12);
+        stepsCounter.setFont("Helvetica",FontStyle.BOLD,22);
+        canvas.add(stepsCounter);
 
         blockManager = new BlockManager(this.canvas);
 
@@ -370,7 +371,7 @@ public class GameBoard {
      * @param helpPage the page pops up after clicking on the "help" button
      * @param instructionBoxes the graphic groups consists of labels that display the instruction
      * @param prop the proportion of width of help page used to determine the x coordinate of the GraphicText
-     * @param prop2 the proportion of height of help page used to determine the x coordinate of the GraphicText
+       * @param prop2 the proportion of height of help page used to determine the x coordinate of the GraphicText
      * @param s the instruction lines
      * @param font the font of the text of instruction lines
      * @param color the color of the text of the instruction lines
