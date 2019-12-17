@@ -29,7 +29,6 @@ public class BlockManager {
      * The 3rd section loops through each block and determines individual locations in the Boustrophedon.
      */
     public void generateBlock() {
-
         List<String> BlockByType = new ArrayList<>();
         int rounds = BLOCK_QUANTITY / availableTypes.size();
         int remainder = BLOCK_QUANTITY % availableTypes.size();

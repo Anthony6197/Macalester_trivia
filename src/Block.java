@@ -8,8 +8,8 @@ import java.awt.*;
  *
  * @author Yutong Wu
  * @author Zuofu Huang
- *
  */
+
 class Block extends Rectangle {
     private final int index;
     private String type;

@@ -60,7 +60,6 @@ public class GameBoard {
         GraphicsText title = new GraphicsText("Can you graduate from MSCS and Chemistry?",
                 canvas.getWidth()*0.14,canvas.getHeight()*0.3);
         title.setFont(Font.SANS_SERIF, FontStyle.BOLD, 34);
-        title.setFillColor(new Color(0, 0, 0));
         canvas.add(title);
 
         Button startGame = new Button("I Wish to Start!");
@@ -143,8 +142,8 @@ public class GameBoard {
     }
 
     /**
-     * Moves forward the user once per dice roll and determines what happens with that move forward.
-     * Show the question if the user hasn't reached the finish line, ask to restart if the user has.
+     * Moves forward the user once per dice roll and update the block color with that move forward.
+     * Show the question if the user hasn't reached the finish line.
      */
     private void moveForward(){
         int diceRoll = rand.nextInt(6) + 1;
@@ -240,8 +239,8 @@ public class GameBoard {
     }
 
     /**
-     * Display the number of users get from the current correct question they
-     * @param point scores the user gets
+     * Display the points the user gets from the current question they got correct.
+     * @param point amount of points the user gets
      */
     private void giveScoreOnMap(int point){
         Block currentBlock = blockManager.getBlock(currentBlockNumber);
@@ -285,7 +284,7 @@ public class GameBoard {
     }
 
     /**
-     * Create a GraphicsText object to indicate whether the user won the game, after they have surpassed the finish line.
+     * Create a GraphicsText object to indicate whether the user won the game after they have surpassed the finish line.
      */
     private void showFinalResult(String s, Color color) {
         GraphicsText textBox = new GraphicsText(s);
@@ -363,7 +362,7 @@ public class GameBoard {
         }
 
         restart.onClick(()->{
-            new GameBoard(); // canvas.removeAll(); after the canvasWindow is changed.
+            new GameBoard(); // canvas.removeAll(); after the mechanism of canvasWindow is changed.
             canvas.closeWindow(); // run();
         });
     }
@@ -392,6 +391,3 @@ public class GameBoard {
         new GameBoard();
     }
 }
-
-// Add a note about another change: A unfinished restart button will show up after player lose and the
-// starter page will show up with random color.
