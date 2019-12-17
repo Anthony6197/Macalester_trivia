@@ -355,16 +355,15 @@ public class GameBoard {
         restart.setCenter(canvas.getWidth()*0.5,canvas.getHeight()*0.8);
         canvas.add(restart);
 
-        try {
-            canvas.remove(questionGroup);
-        } catch (Exception NoSuchElementException){
-            return;
-        }
-
         restart.onClick(()->{
-            new GameBoard(); // canvas.removeAll(); after the mechanism of canvasWindow is changed.
+            new GameBoard(); // canvas.removeAll(); potentially after the mechanism of canvasWindow is changed.
             canvas.closeWindow(); // run();
         });
+
+        try {
+            canvas.remove(questionGroup);
+        } catch (Exception ignored){
+        }
     }
 
     /**
