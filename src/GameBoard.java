@@ -8,13 +8,12 @@ import java.util.List;
 import java.util.Random;
 
 /**
+ * Create canvas windows for the game.
+ *
  * @author Yutong Wu
  * @author Zuofu Huang
  */
 
-/**
- * Create canvas windows for the game.
- */
 public class GameBoard {
     private CanvasWindow canvas;
     private BlockManager blockManager;
@@ -242,7 +241,7 @@ public class GameBoard {
 
     /**
      * Display the number of users get from the current correct question they
-     * @param point scores the user can get
+     * @param point scores the user gets
      */
     private void giveScoreOnMap(int point){
         Block currentBlock = blockManager.getBlock(currentBlockNumber);
@@ -349,8 +348,8 @@ public class GameBoard {
     }
 
     /**
-     * Restart the game after the use has finished one. Remove all question-related objects, if applicable before adding
-     * the restart button.
+     * Restart the game after the use has finished one. Remove all question-related objects, if applicable,
+     * before adding the restart button.
      */
     private void restart(){
         Button restart = new Button("restart");
@@ -373,17 +372,17 @@ public class GameBoard {
      * Helper function used to regulate the instruction lines display in the pops up after clicking on the "help" button
      * @param helpPage the page pops up after clicking on the "help" button
      * @param instructionBoxes the graphic groups consists of labels that display the instruction
-     * @param prop the proportion of width of help page used to determine the x coordinate of the GraphicText
-       * @param prop2 the proportion of height of help page used to determine the x coordinate of the GraphicText
-     * @param s the instruction lines
+     * @param x the proportion of width of help page used to determine the x coordinate of the GraphicText
+     * @param y the proportion of height of help page used to determine the x coordinate of the GraphicText
+     * @param content the instruction lines
      * @param font the font of the text of instruction lines
      * @param color the color of the text of the instruction lines
      */
-    private void createInstructionLine(CanvasWindow helpPage, GraphicsGroup instructionBoxes, double prop, double prop2,
-                                       String s, int font, Color color) {
+    private void createInstructionLine(CanvasWindow helpPage, GraphicsGroup instructionBoxes, double x, double y,
+                                       String content, int font, Color color) {
         GraphicsText instructionLine = new GraphicsText();
-        instructionLine.setPosition(helpPage.getWidth() * prop, helpPage.getHeight() * prop2);
-        instructionLine.setText(s);
+        instructionLine.setPosition(helpPage.getWidth() * x, helpPage.getHeight() * y);
+        instructionLine.setText(content);
         instructionLine.setFont(Font.DIALOG, FontStyle.BOLD, font);
         instructionLine.setFillColor(color);
         instructionBoxes.add(instructionLine);

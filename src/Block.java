@@ -4,7 +4,10 @@ import comp127graphics.Rectangle;
 import java.awt.*;
 
 /**
+ * Specify the structure of blocks, each one represented by a rectangle shape in the game map.
+ *
  * @author Yutong Wu
+ * @author Zuofu Huang
  *
  */
 class Block extends Rectangle {

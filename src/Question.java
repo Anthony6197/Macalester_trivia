@@ -3,10 +3,12 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * @author Zuofu Huang
+ * Create the structure of questions, each with a question stem, four choices and its type
  *
- * Math and Chemistry questions
+ * @author Zuofu Huang
+ * @author Yutong Wu
  */
+
 public class Question{
     private String prompt;
     private final List<String> choices;
@@ -20,7 +22,6 @@ public class Question{
         this.prompt = Objects.requireNonNull(question);
         this.choices = Objects.requireNonNull(myChoices);
     }
-
 
     public String getType(){
         return type;
@@ -36,21 +37,9 @@ public class Question{
 
     /**
      * Return a mutable array list of all choices.
-     * @return
      */
     public List<String> getAllChoices(){
         return new ArrayList<>(choices);
-    }
-
-    public static void changeX(int x){
-        x ++;
-        System.out.println(x);
-    }
-
-    public static void main(String[] args) {
-        int i = 0;
-        changeX(i);
-        System.out.println(i);
     }
 }
 

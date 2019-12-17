@@ -5,10 +5,11 @@ import java.util.Random;
 import static java.util.stream.Collectors.toList;
 
 /**
+ * A master list of 32 questions that will randomly appear in the trivia.
+ * The first in the masterQuestionList is the correct answer.
+ *
  * @author Zuofu Huang
  * @author Yutong Wu
- * * A master list of 32 questions that will randomly appear in the trivia.
- * The first in the masterQuestionList is the correct answer.
  */
 public class QuestionBank {
     private static final List<Question> masterQuestionList = List.of(

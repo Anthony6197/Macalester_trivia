@@ -5,11 +5,10 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
+ * Generate map blocks, store the blocks into a list and set colors/assign types to each map block it generates.
+ *
  * @author Yutong Wu
  * @author Zuofu Huang
- *
- * Block manager class is used to generate map blocks, store the blocks passed by into a list
- * for to set colors and assign types to each map blocks it generates.
  */
 
 public class BlockManager {
