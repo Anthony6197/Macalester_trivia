@@ -279,6 +279,7 @@ public class GameBoard {
             restart();
         } else if (currentTotalScore >= 60 && exceed){
             showFinalResult("Congratulations!", Color.ORANGE);
+            restart();
         }
     }
 
